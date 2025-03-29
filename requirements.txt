@@ -1,0 +1,4 @@
+mido
+pretty_midi
+argparse
+pytest
