@@ -1,16 +1,17 @@
-# filepath: /multigenerative-grammar-cli/multigenerative-grammar-cli/src/main.py
-
 import sys
 from cli.commands import Commands
 
 def main():
     commands = Commands()
     if len(sys.argv) < 2:
-        print("No command provided. Use 'list' to see available commands.")
+        print("Usage: python3 main.py <command> [args...]")
         return
-    
+
     command_name = sys.argv[1]
-    commands.execute_command(command_name)
+    args = sys.argv[2:]  # Collect additional arguments
+
+    # Pass the command name and arguments to the Commands class
+    commands.execute_command(command_name, *args)
 
 if __name__ == "__main__":
     main()

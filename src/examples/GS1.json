@@ -1,0 +1,103 @@
+{
+    "instruments": {
+        "piano_bass": {
+            "nonterminals": ["S", "A", "B", "M", "H"],
+            "terminals": ["C2", "D2", "E2", "F2", "G2"],
+            "start": "S",
+            "structure_rules": [
+                {
+                    "left": ["S"],
+                    "right": ["A", "B", "A", "A"]
+                },
+                {
+                    "left": ["A"],
+                    "right": ["M", "H"]
+                },
+                {
+                    "left": ["B"],
+                    "right": ["M", "H"]
+                }
+            ],
+            "tone_rules": [
+                {
+                    "left": ["M"],
+                    "right": ["C2", "D2", "E2"]
+                },
+                {
+                    "left": ["H"],
+                    "right": ["F2", "G2"]
+                }
+            ]
+        },
+        "piano_treble": {
+            "nonterminals": ["S", "A", "B", "M", "H"],
+            "terminals": ["C4", "D4", "E4", "F4", "G4"],
+            "start": "S",
+            "structure_rules": [
+                {
+                    "left": ["S"],
+                    "right": ["A", "B", "A", "A"]
+                },
+                {
+                    "left": ["A"],
+                    "right": ["M", "H"]
+                },
+                {
+                    "left": ["B"],
+                    "right": ["M", "H"]
+                }
+            ],
+            "tone_rules": [
+                {
+                    "left": ["M"],
+                    "right": ["C4", "D4", "E4"]
+                },
+                {
+                    "left": ["H"],
+                    "right": ["F4", "G4"]
+                }
+            ]
+        },
+        "violin": {
+            "nonterminals": ["X", "Y", "M", "H"],
+            "terminals": ["G4", "A4", "B4", "C5"],
+            "start": "X",
+            "structure_rules": [
+                {
+                    "left": ["X"],
+                    "right": ["A", "B"]
+                },
+                {
+                    "left": ["A"],
+                    "right": ["M", "H"]
+                },
+                {
+                    "left": ["B"],
+                    "right": ["M", "H"]
+                }
+            ],
+            "tone_rules": [
+                {
+                    "left": ["M"],
+                    "right": ["G4", "A4"]
+                },
+                {
+                    "left": ["H"],
+                    "right": ["B4", "C5"]
+                }
+            ]
+        }
+    },
+    "Q": [
+        {
+            "piano_bass": 1,
+            "piano_treble": 0,
+            "violin": 0
+        },
+        {
+            "piano_bass": 0,
+            "piano_treble": 1,
+            "violin": 1
+        }
+    ]
+}
