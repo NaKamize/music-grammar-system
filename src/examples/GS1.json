@@ -21,11 +21,41 @@
             "tone_rules": [
                 {
                     "left": ["M"],
-                    "right": ["C2", "D2", "E2"]
+                    "right": [
+                        {
+                            "tone": "C2",
+                            "length": "quarter",
+                            "octave": 2,
+                            "dynamics": "piano",
+                            "variation": "none"
+                        },
+                        {
+                            "tone": "D2",
+                            "length": "eighth",
+                            "octave": 2,
+                            "dynamics": "mezzo-forte",
+                            "variation": "staccato"
+                        }
+                    ]
                 },
                 {
                     "left": ["H"],
-                    "right": ["F2", "G2"]
+                    "right": [
+                        {
+                            "tone": "F2",
+                            "length": "half",
+                            "octave": 2,
+                            "dynamics": "forte",
+                            "variation": "legato"
+                        },
+                        {
+                            "tone": "G2",
+                            "length": "whole",
+                            "octave": 2,
+                            "dynamics": "fortissimo",
+                            "variation": "none"
+                        }
+                    ]
                 }
             ]
         },
@@ -50,11 +80,41 @@
             "tone_rules": [
                 {
                     "left": ["M"],
-                    "right": ["C4", "D4", "E4"]
+                    "right": [
+                        {
+                            "tone": "C4",
+                            "length": "quarter",
+                            "octave": 4,
+                            "dynamics": "piano",
+                            "variation": "none"
+                        },
+                        {
+                            "tone": "D4",
+                            "length": "eighth",
+                            "octave": 4,
+                            "dynamics": "mezzo-forte",
+                            "variation": "staccato"
+                        }
+                    ]
                 },
                 {
                     "left": ["H"],
-                    "right": ["F4", "G4"]
+                    "right": [
+                        {
+                            "tone": "F4",
+                            "length": "half",
+                            "octave": 4,
+                            "dynamics": "forte",
+                            "variation": "legato"
+                        },
+                        {
+                            "tone": "G4",
+                            "length": "whole",
+                            "octave": 4,
+                            "dynamics": "fortissimo",
+                            "variation": "none"
+                        }
+                    ]
                 }
             ]
         },
@@ -79,11 +139,41 @@
             "tone_rules": [
                 {
                     "left": ["M"],
-                    "right": ["G4", "A4"]
+                    "right": [
+                        {
+                            "tone": "G4",
+                            "length": "quarter",
+                            "octave": 4,
+                            "dynamics": "mezzo-piano",
+                            "variation": "none"
+                        },
+                        {
+                            "tone": "A4",
+                            "length": "eighth",
+                            "octave": 4,
+                            "dynamics": "mezzo-forte",
+                            "variation": "staccato"
+                        }
+                    ]
                 },
                 {
                     "left": ["H"],
-                    "right": ["B4", "C5"]
+                    "right": [
+                        {
+                            "tone": "B4",
+                            "length": "half",
+                            "octave": 4,
+                            "dynamics": "forte",
+                            "variation": "legato"
+                        },
+                        {
+                            "tone": "C5",
+                            "length": "whole",
+                            "octave": 5,
+                            "dynamics": "fortissimo",
+                            "variation": "none"
+                        }
+                    ]
                 }
             ]
         }

@@ -13,6 +13,14 @@ class Instrument:
         self.structure_rules = structure_rules
         self.tone_rules = tone_rules
 
+class ToneRule:
+    def __init__(self, tone, length, octave, dynamics, variation):
+        self.tone = tone
+        self.length = length
+        self.octave = octave
+        self.dynamics = dynamics
+        self.variation = variation
+
 class Parser:
     def parse_grammar(self, file_path):
         """
@@ -25,12 +33,29 @@ class Parser:
             # Parse instruments
             instruments = {}
             for instrument_name, instrument_data in data["instruments"].items():
+                # Parse tone rules with properties
+                tone_rules = []
+                for rule in instrument_data["tone_rules"]:
+                    parsed_rule = {
+                        "left": rule["left"],
+                        "right": [
+                            ToneRule(
+                                tone=tone["tone"],
+                                length=tone["length"],
+                                octave=tone["octave"],
+                                dynamics=tone["dynamics"],
+                                variation=tone["variation"]
+                            ) for tone in rule["right"]
+                        ]
+                    }
+                    tone_rules.append(parsed_rule)
+                
                 instruments[instrument_name] = Instrument(
                     nonterminals=instrument_data["nonterminals"],
                     terminals=instrument_data["terminals"],
                     start=instrument_data["start"],
                     structure_rules=instrument_data["structure_rules"],
-                    tone_rules=instrument_data["tone_rules"]
+                    tone_rules=tone_rules
                 )
             
             # Parse Q
@@ -42,20 +67,26 @@ class Parser:
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"Error loading grammar file: {e}")
             return None
-
-    def validate_grammar(self, grammar_system):
+    
+    def print_grammar_system(self, grammar_system):
         """
-        Validates the structure of the GrammarSystem object.
+        Prints the grammar system in a readable format.
         """
-        if not isinstance(grammar_system, GrammarSystem):
-            raise ValueError("Invalid grammar system object.")
-
+        print("Grammar System:")
         for instrument_name, instrument in grammar_system.instruments.items():
-            if not instrument.nonterminals or not instrument.terminals:
-                raise ValueError(f"Instrument '{instrument_name}' must have nonterminals and terminals.")
-            if not instrument.start:
-                raise ValueError(f"Instrument '{instrument_name}' must have a start symbol.")
-            if not instrument.structure_rules or not instrument.tone_rules:
-                raise ValueError(f"Instrument '{instrument_name}' must have structure and tone rules.")
+            print(f"Instrument: {instrument_name}")
+            
+            # Print structure rules
+            print("  Structure Rules:")
+            for rule in instrument.structure_rules:
+                print(f"    Rule Left: {rule['left']}, Rule Right: {rule['right']}")
+            
+            # Print tone rules
+            print("  Tone Rules:")
+            for rule in instrument.tone_rules:
+                print(f"    Rule Left: {rule['left']}")
+                for tone in rule["right"]:
+                    print(f"      Tone: {tone.tone}, Length: {tone.length}, Octave: {tone.octave}, Dynamics: {tone.dynamics}, Variation: {tone.variation}")
         
-        print("Grammar system is valid.")
+        # Print Q (sequence of rules)
+        print(f"Q (Sequence of Rules): {grammar_system.Q}")

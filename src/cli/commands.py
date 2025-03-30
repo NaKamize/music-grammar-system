@@ -26,16 +26,5 @@ class Commands:
             print("Failed to parse the grammar file.")
             return
 
-        # Placeholder for generating music logic
-        print(f"Successfully parsed grammar file: {grammar_file}")
-        # Print the grammar system in a readable format
-        print("Successfully parsed grammar file:")
-        print("Grammar System:")
-        for instrument_name, instrument in grammar_system.instruments.items():
-            print(f"  Instrument: {instrument_name}")
-            print(f"    Nonterminals: {instrument.nonterminals}")
-            print(f"    Terminals: {instrument.terminals}")
-            print(f"    Start Symbol: {instrument.start}")
-            print(f"    Structure Rules: {instrument.structure_rules}")
-            print(f"    Tone Rules: {instrument.tone_rules}")
-        print(f"Q (Sequence of Rules): {grammar_system.Q}")
+        # Print the grammar system using the parser's method
+        parser.print_grammar_system(grammar_system)

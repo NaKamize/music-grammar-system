@@ -1,1 +1,2 @@
-src/grammar/__pycache__/
+src/grammar/__pycache__/*
+src/cli/__pycache__/*
