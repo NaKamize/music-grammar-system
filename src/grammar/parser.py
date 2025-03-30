@@ -1,9 +1,11 @@
 import json
 
+
 class GrammarSystem:
-    def __init__(self, instruments, Q):
-        self.instruments = instruments
-        self.Q = Q
+    def __init__(self, instruments, states):
+        self.instruments = instruments  # Dictionary of Instrument objects
+        self.states = states  # List of dictionaries representing states
+
 
 class Instrument:
     def __init__(self, nonterminals, terminals, start, structure_rules, tone_rules):
@@ -13,13 +15,16 @@ class Instrument:
         self.structure_rules = structure_rules
         self.tone_rules = tone_rules
 
+
 class ToneRule:
-    def __init__(self, tone, length, octave, dynamics, variation):
+    def __init__(self, tone=None, length=None, octave=None, dynamics=None, variation=None, chord=None):
         self.tone = tone
         self.length = length
         self.octave = octave
         self.dynamics = dynamics
         self.variation = variation
+        self.chord = chord
+
 
 class Parser:
     def parse_grammar(self, file_path):
@@ -29,27 +34,30 @@ class Parser:
         try:
             with open(file_path, 'r') as file:
                 data = json.load(file)
-            
+
             # Parse instruments
             instruments = {}
             for instrument_name, instrument_data in data["instruments"].items():
-                # Parse tone rules with properties
+                # Parse tone rules
                 tone_rules = []
                 for rule in instrument_data["tone_rules"]:
                     parsed_rule = {
                         "left": rule["left"],
                         "right": [
-                            ToneRule(
-                                tone=tone["tone"],
-                                length=tone["length"],
-                                octave=tone["octave"],
-                                dynamics=tone["dynamics"],
-                                variation=tone["variation"]
-                            ) for tone in rule["right"]
+                            [
+                                ToneRule(
+                                    tone=tone.get("tone"),
+                                    length=tone.get("length"),
+                                    octave=tone.get("octave"),
+                                    dynamics=tone.get("dynamics"),
+                                    variation=tone.get("variation"),
+                                    chord=tone.get("chord")
+                                ) for tone in tones
+                            ] for tones in rule["right"]
                         ]
                     }
                     tone_rules.append(parsed_rule)
-                
+
                 instruments[instrument_name] = Instrument(
                     nonterminals=instrument_data["nonterminals"],
                     terminals=instrument_data["terminals"],
@@ -57,17 +65,17 @@ class Parser:
                     structure_rules=instrument_data["structure_rules"],
                     tone_rules=tone_rules
                 )
-            
-            # Parse Q
-            Q = data["Q"]
+
+            # Parse states (Q)
+            states = data["Q"]
 
             # Return GrammarSystem object
-            return GrammarSystem(instruments=instruments, Q=Q)
-        
+            return GrammarSystem(instruments=instruments, states=states)
+
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"Error loading grammar file: {e}")
             return None
-    
+
     def print_grammar_system(self, grammar_system):
         """
         Prints the grammar system in a readable format.
@@ -85,8 +93,11 @@ class Parser:
             print("  Tone Rules:")
             for rule in instrument.tone_rules:
                 print(f"    Rule Left: {rule['left']}")
-                for tone in rule["right"]:
-                    print(f"      Tone: {tone.tone}, Length: {tone.length}, Octave: {tone.octave}, Dynamics: {tone.dynamics}, Variation: {tone.variation}")
+                for tones in rule["right"]:
+                    for tone in tones:
+                        print(f"      Tone: {tone.tone}, Length: {tone.length}, Octave: {tone.octave}, Dynamics: {tone.dynamics}, Variation: {tone.variation}, Chord: {tone.chord}")
         
-        # Print Q (sequence of rules)
-        print(f"Q (Sequence of Rules): {grammar_system.Q}")
+        # Print states
+        print("States (Q):")
+        for state in grammar_system.states:
+            print(f"  {state}")

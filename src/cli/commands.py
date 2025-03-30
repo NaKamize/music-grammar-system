@@ -1,4 +1,5 @@
 from grammar.parser import Parser
+from grammar.generator import Generator
 
 class Commands:
     def execute_command(self, command_name, *args):
@@ -28,3 +29,16 @@ class Commands:
 
         # Print the grammar system using the parser's method
         parser.print_grammar_system(grammar_system)
+        
+        # Generate music
+        generator = Generator(grammar_system)
+        multi_string = generator.generate_music()
+
+        # Print the generated multi-string
+        for instrument_name, result in multi_string.items():
+            print(f"Instrument: {instrument_name}")
+            print("  Final String:")
+            print(f"    {' '.join(result['final_string'])}")
+            print("  Steps:")
+            for step in result["steps"]:
+                print(f"    {step}")
