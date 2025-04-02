@@ -120,17 +120,22 @@ class Generator:
                             new_string = list(current_string)  # Convert to list for mutable operations
                             left_index = 0
                             i = 0
+                            j = 0
                             while i < len(current_string):
                                 if current_string[i:i + len(left[left_index])] == left[left_index]:
                                     print(f"Matched {left[left_index]} at position {i}")
+                                    # Insert extra white space after the matched substring
+                                    new_string[j + len(left[left_index]):j + len(left[left_index])] = [' '] * len(left[left_index])
                                     # Replace the matched substring with the corresponding symbol from 'right'
-                                    new_string[i:i + len(right[left_index])] = list(str(right[left_index]))
-                                    i += len(right[left_index])
+                                    new_string[j:j + len(right[left_index])] = list(str(right[left_index]))
+                                    i += len(left[left_index])
+                                    j += len(right[left_index])
                                     left_index += 1
                                     if left_index == len(left):
                                         break
                                 else:
                                     i += 1
+                                    j += 1
                             # Convert back to string
                             new_string = ''.join(new_string)
                             steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
