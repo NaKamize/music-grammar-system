@@ -1,6 +1,54 @@
+import random
+
+
 class Generator:
-    def __init__(self, grammar_system):
+    def __init__(self, grammar_system, iterations=10):
         self.grammar_system = grammar_system
+        self.iterations = iterations
+        
+    def get_nonterminals_from_string(self, instrument_name, multi_string):
+        """
+        Retrieves nonterminals from the instrument's final string, matching multi-symbol nonterminals.
+        """
+        instrument = self.grammar_system.instruments.get(instrument_name)
+        nonterminals = []
+        
+        # Get the string from multi_string
+        notes = multi_string[instrument_name]["final_string"][0]  # Assuming final_string is a single string like "AABAS1"
+        
+        # Iterate over the string to find matches for nonterminals
+        i = 0
+        while i < len(notes):
+            matched = False
+            # Check each nonterminal in the list
+            for nonterminal in instrument.nonterminals:
+                # Check if the substring matches the nonterminal
+                if notes[i:i + len(nonterminal)] == nonterminal:
+                    nonterminals.append(nonterminal)
+                    print(f"Matched nonterminal: {nonterminal} at position {i}")
+                    i += len(nonterminal)  # Move the index forward by the length of the matched nonterminal
+                    matched = True
+                    break
+            if not matched:
+                # If no match, move to the next character
+                i += 1
+        
+        return nonterminals
+    
+    # Check if the left side of the rule matches the current string in a scattered manner
+    def is_scattered_match(self, current_string, left):
+        """
+        Checks if the characters in 'left' appear in 'current_string' in the correct order,
+        but not necessarily consecutively.
+        """
+        left_index = 0
+        for char in current_string:
+            if char == left[left_index]:
+                left_index += 1
+            if left_index == len(left):
+                return True
+        return False
+        
 
     def generate_music(self):
         """
@@ -8,47 +56,76 @@ class Generator:
         """
         multi_string = {}
 
-        # Iterate over instruments
+        # Initialize multi-string for all instruments
         for instrument_name, instrument in self.grammar_system.instruments.items():
-            print(f"Generating for instrument: {instrument_name}")
-            current_string = [instrument.start]  # Start with the start symbol
-            steps = []
-
-            # Apply structure rules iteratively until no changes occur
-            while True:
-                modified = False
-                for rule in instrument.structure_rules:
-                    for i, symbol in enumerate(current_string):
-                        if symbol == rule["left"][0]:  # Match the left-hand side
-                            current_string = current_string[:i] + rule["right"] + current_string[i + 1:]
-                            steps.append(f"Applied structure rule: {rule['left']} -> {rule['right']}")
-                            modified = True
-                            break
-                    if modified:
-                        break
-                if not modified:
-                    break  # Exit when no more rules can be applied
-
-            # Apply tone rules based on states
-            for state in self.grammar_system.states:
-                if instrument_name in state:  # Check if the instrument has a state
-                    state_index = state[instrument_name]  # Get the current state index
-                    for i, symbol in enumerate(current_string):
-                        for rule_index, rule in enumerate(instrument.tone_rules):
-                            if rule_index == state_index and symbol == rule["left"][0]:  # Match state and left-hand side
-                                tones = [
-                                    f"{tone.tone or tone.chord}({tone.length}, {tone.octave}, {tone.dynamics}, {tone.variation})"
-                                    for tones_group in rule["right"]
-                                    for tone in tones_group
-                                ]
-                                current_string = current_string[:i] + tones + current_string[i + 1:]
-                                steps.append(f"Applied tone rule (state {state_index}): {rule['left']} -> {tones}")
-                                break
-
-            # Store the generated string for the instrument
             multi_string[instrument_name] = {
-                "final_string": current_string,
-                "steps": steps
+                "final_string": [instrument.start],  # Start with the start symbol
+                "steps": []
             }
+        
+        # Get the first instrument name
+        first_instrument_name = next(iter(self.grammar_system.instruments))
+        
+        # Pass the first instrument name to the function
+        nonterminals = self.get_nonterminals_from_string(first_instrument_name, multi_string)
+        print(f"Nonterminals for {first_instrument_name}: {nonterminals}")
+        
+        # Loop rules and find rule for current nonterminal
+        for instrument_name, instrument in self.grammar_system.instruments.items():
+            current_string = multi_string[instrument_name]["final_string"][0]
+            steps = multi_string[instrument_name]["steps"]
+            
+            # Apply rules iteratively
+            while True:
+                rule_applied = False
+                for rule in instrument.structure_rules:
+                    left = rule["left"]
+                    right = rule["right"]
+                    print(current_string)
+                    print(f"Trying to apply rule: {left} -> {right}")
+                    if len(left) == 1:
+                        # Check if the left side of the rule matches the current string
+                        match_index = current_string.find(''.join(left))
+                        if match_index != -1:
+                            # Replace the left side with the right side at the specific position
+                            new_string = (
+                                current_string[:match_index] +
+                                ''.join([str(note) for note in right]) +
+                                current_string[match_index + len(''.join(left)):]
+                            )
+                            steps.append(f"Applied rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                            current_string = new_string
+                            rule_applied = True
+                            break
+                    else:
+                        # Check if the left side matches in a scattered manner
+                        if self.is_scattered_match(current_string, left):
+                            # Replace only the symbols in 'left' with the corresponding symbols in 'right'
+                            new_string = list(current_string)  # Convert to list for mutable operations
+                            left_index = 0
+                            for i, char in enumerate(current_string):
+                                if char == left[left_index]:
+                                    # Replace the matched character with the corresponding symbol from 'right'
+                                    new_string[i] = str(right[left_index])
+                                    left_index += 1
+                                if left_index == len(left):
+                                    break
+                            # Convert back to string
+                            new_string = ''.join(new_string)
+                            steps.append(f"Applied scattered rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                            current_string = new_string
+                            rule_applied = True
+                        
+                        
+                
+                # Update the final string in multi_string
+                multi_string[instrument_name]["final_string"][0] = current_string
+                
+                # Break the loop if no rule was applied
+                if not rule_applied:
+                    break
+        nonterminals = self.get_nonterminals_from_string(first_instrument_name, multi_string)
+        print(f"Nonterminals for {first_instrument_name}: {nonterminals}")
+        # Pass the first instrument name to the function
 
         return multi_string

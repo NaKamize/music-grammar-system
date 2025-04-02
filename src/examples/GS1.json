@@ -1,11 +1,11 @@
 {
     "instruments": {
         "piano_bass": {
-            "nonterminals": ["S", "A", "B", "M", "H"],
+            "nonterminals": ["S", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
             "terminals": ["C2", "D2", "E2", "F2", "G2"],
             "start": "S",
             "structure_rules": [
-                { "left": ["S"], "right": ["AAABA"] },
+                { "left": ["S"], "right": ["AABA"] },
                 { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
                 { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
             ],
@@ -62,11 +62,11 @@
             ]
         },
         "piano_treble": {
-            "nonterminals": ["S", "A", "B", "M", "H"],
+            "nonterminals": ["S1", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
             "terminals": ["C4", "D4", "E4", "F4", "G4"],
             "start": "S1",
             "structure_rules": [
-                { "left": ["S1"], "right": ["AAABA"] },
+                { "left": ["S1"], "right": ["AABA"] },
                 { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
                 { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
             ],
@@ -123,11 +123,11 @@
             ]
         },
         "violin": {
-            "nonterminals": ["X", "Y", "M", "H"],
+            "nonterminals": ["S2", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
             "terminals": ["G4", "A4", "B4", "C5"],
-            "start": "S3",
+            "start": "S2",
             "structure_rules": [
-                { "left": ["S3"], "right": ["AAABA"] },
+                { "left": ["S2"], "right": ["AABA"] },
                 { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
                 { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
             ],

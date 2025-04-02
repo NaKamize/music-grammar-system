@@ -28,10 +28,10 @@ class Commands:
             return
 
         # Print the grammar system using the parser's method
-        parser.print_grammar_system(grammar_system)
+        #parser.print_grammar_system(grammar_system)
         
         # Generate music
-        generator = Generator(grammar_system)
+        generator = Generator(grammar_system, iterations=10)
         multi_string = generator.generate_music()
 
         # Print the generated multi-string
