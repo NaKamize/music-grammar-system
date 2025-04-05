@@ -242,11 +242,11 @@ class Generator:
                                     i += 1
                                     j += 1
                             # Convert back to string
-                            steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                            steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                             current_string = new_string
                             rule_applied = True
                         else:
-                            print("No match found for scattered structure rule")
+                            print("No match found for scattered tone rule")
                             
 
                 # Update the final string in multi_string
