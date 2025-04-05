@@ -6,6 +6,15 @@ class Generator:
         self.grammar_system = grammar_system
         self.iterations = iterations
         
+        # Initialize a dictionary to keep count of structure rules for each instrument
+        self.structure_rule_counts = {
+            instrument_name: len(instrument.structure_rules)
+            for instrument_name, instrument in grammar_system.instruments.items()
+        }
+        print(f"Structure rule counts: {self.structure_rule_counts}")
+        self.finished = False
+        self.first_instrument = list(self.grammar_system.instruments.keys())[0]
+        
     def get_nonterminals_from_string(self, instrument_name, multi_string):
         """
         Retrieves nonterminals from the instrument's final string, matching multi-symbol nonterminals.
@@ -207,15 +216,27 @@ class Generator:
                         steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         current_string = new_string
                         rule_applied = True
+                        break
                     else:
                         print("No match found for scattered structure rule")
-
             # Update the final string in multi_string
             multi_string[instrument_name]["final_string"][0] = current_string
             # Break the loop if no rule was applied
+            sync_state = [self.grammar_system.states[0]]
             if not rule_applied:
+                self.finished = True
                 break
-        return multi_string, current_string, steps
+            # Get the index of the applied rule in the instrument.structure_rules
+            rule_index = next(
+                (i for i, f_rule in enumerate(self.grammar_system.instruments[instrument_name].structure_rules) if rule == f_rule),
+                -1
+            )
+            
+            states = self.grammar_system.states
+            sync_state = [item for item in states if item.get('piano_bass') == rule_index]
+            break
+        
+        return multi_string, current_string, steps, sync_state
     
     def apply_tone_transformation_rules(self, current_string, sorted_tone_rules, instrument_name, steps, multi_string):
         """
@@ -259,16 +280,38 @@ class Generator:
                         steps.append(f"Applied scattered tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         current_string = self.replace_scattered_tone_rule(current_string, left, right)
                         rule_applied = True
+                        break
                     else:
                         print("No match found for scattered tone rule")
-                        
+            
             # Update the final string in multi_string
             multi_string[instrument_name]["final_string"][0] = current_string
             # Break the loop if no rule was applied
+            sync_state = [self.grammar_system.states[0]]
             if not rule_applied:
+                self.finished = True
                 break
+            # Get the index of the applied rule in the instrument.structure_rules
+            rule_index = next(
+                (i for i, f_rule in enumerate(self.grammar_system.instruments[instrument_name].tone_rules) if rule == f_rule),
+                -1
+            )
+            
+            states = self.grammar_system.states
+            sync_state = [item for item in states if item.get('piano_bass') == (rule_index + self.structure_rule_counts[instrument_name])]
+            break
                 
-        return multi_string
+        return multi_string, sync_state
+    
+    def get_next_instrument(self, current_instrument_name, states):
+        """
+        Returns the next instrument name in the sequence.
+        If the current instrument is the last one, it loops back to the first.
+        """
+        instrument_names = list(states[0].keys())
+        current_index = instrument_names.index(current_instrument_name)
+        next_index = (current_index + 1) % len(instrument_names)  # Loop back to the first instrument
+        return instrument_names[next_index]
 
     def generate_music(self):
         """
@@ -276,8 +319,15 @@ class Generator:
         """
         multi_string = self.initialize_multi_string()
 
+        states = self.grammar_system.states
+        print(f"States: {states}")
+        
+        # Get the first instrument name and instrument by itself
+        instrument_name = list(self.grammar_system.instruments.keys())[0]
+        instrument = self.grammar_system.instruments[instrument_name]
+        
         # Loop rules and find rule for current nonterminal
-        for instrument_name, instrument in self.grammar_system.instruments.items():
+        while self.finished is False:
             current_string = multi_string[instrument_name]["final_string"][0]
             steps = multi_string[instrument_name]["steps"]
 
@@ -288,16 +338,20 @@ class Generator:
                 reverse=True
             )
 
-            multi_string, current_string, steps = self.apply_structure_transformation_rules(
+            multi_string, current_string, steps, sync_state = self.apply_structure_transformation_rules(
                 current_string,
-                sorted_structure_rules,
+                sorted_structure_rules if self.first_instrument == instrument_name else sorted_structure_rules,
                 instrument_name,
                 steps,
                 multi_string
             )
+            
+            instrument_name = self.get_next_instrument(instrument_name, sync_state)
+            instrument = self.grammar_system.instruments[instrument_name]
         
+        self.finished = False
         # Apply tone rules to generate tones
-        for instrument_name, instrument in self.grammar_system.instruments.items():
+        while self.finished is False:
             current_string = multi_string[instrument_name]["final_string"][0]
             steps = multi_string[instrument_name]["steps"]
 
@@ -308,12 +362,15 @@ class Generator:
                 reverse=True
             )
             
-            multi_string = self.apply_tone_transformation_rules(
+            multi_string, sync_state = self.apply_tone_transformation_rules(
                 current_string,
                 sorted_tone_rules,
                 instrument_name,
                 steps,
                 multi_string
             )
+            
+            instrument_name = self.get_next_instrument(instrument_name, sync_state)
+            instrument = self.grammar_system.instruments[instrument_name]
 
         return multi_string

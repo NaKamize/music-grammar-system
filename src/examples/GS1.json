@@ -187,6 +187,11 @@
     "Q": [
         { "piano_bass": 0, "piano_treble": 0, "violin": 0 },
         { "piano_bass": 1, "piano_treble": 1, "violin": 1 },
-        { "piano_bass": 2, "piano_treble": 2, "violin": 2 }
+        { "piano_bass": 2, "piano_treble": 2, "violin": 2 },
+        { "piano_bass": 3, "piano_treble": 3, "violin": 3 },
+        { "piano_bass": 4, "piano_treble": 4, "violin": 4 },
+        { "piano_bass": 5, "piano_treble": 5, "violin": 5 },
+        { "piano_bass": 6, "piano_treble": 6, "violin": 6 },
+        { "piano_bass": 7, "piano_treble": 7, "violin": 7 }
     ]
 }
