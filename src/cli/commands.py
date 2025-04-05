@@ -38,7 +38,7 @@ class Commands:
         for instrument_name, result in multi_string.items():
             print(f"Instrument: {instrument_name}")
             print("  Final String:")
-            print(f"    {' '.join(result['final_string'])}")
+            print(f"    {result['final_string']}")# ' '.join(result['final_string'])
             print("  Steps:")
             for step in result["steps"]:
                 print(f"    {step}")
