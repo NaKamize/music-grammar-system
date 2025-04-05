@@ -88,27 +88,194 @@ class Generator:
             if haystack[i:i + len(needle)] == needle:
                 return i
         return -1
-        
-
-    def generate_music(self):
+    
+    def replace_scattered_tone_rule(self, current_string, left, right):
         """
-        Generates multi-string music representation based on the grammar system.
+        Applies the scattered tone rule by replacing the left side with the right side in the current string.
+        """
+        # Replace only the symbols in 'left' with the corresponding symbols in 'right'
+        new_string = list(current_string)  # Convert to list for mutable operations
+        left_index = 0
+        i = 0
+        j = 0
+        while i < len(current_string):
+            if list(current_string[i:i + len(left[left_index])]) == list(left[left_index]):
+                if len(left[left_index]) > 1:
+                    # remove following characters
+                    new_string[j:j + len(left[left_index])] = [' '] * (len(left[left_index]) - 1)
+                    print(new_string)
+                    # apply the right side
+                    new_string[j] = right[left_index]
+                    print(new_string)
+                    j += 0
+                else:
+                    # replace the matched substring with the corresponding symbol from 'right'
+                    print(f"Replacing {new_string[j]} with {right[left_index]}")
+                    new_string[j] = right[left_index]
+                    j += 1
+                left_index += 1
+                i += 1
+                if left_index == len(left):
+                    break
+            else:
+                i += 1
+                j += 1
+        return new_string
+    
+    def replace_scattered_strucutre_symbols(self, current_string, left, right):
+        """
+        Applies the scattered structure rule by replacing the left side with the right side in the current string.
+        """
+        # Replace only the symbols in 'left' with the corresponding symbols in 'right'
+        new_string = list(current_string)  # Convert to list for mutable operations
+        left_index = 0
+        i = 0
+        j = 0
+        while i < len(current_string):
+            if current_string[i:i + len(left[left_index])] == left[left_index]:
+                print(f"Matched {left[left_index]} at position {i}")
+                # Insert extra white space after the matched substring
+                new_string[j + len(left[left_index]):j + len(left[left_index])] = [' '] * len(left[left_index])
+                # Replace the matched substring with the corresponding symbol from 'right'
+                new_string[j:j + len(right[left_index])] = list(str(right[left_index]))
+                i += len(left[left_index])
+                j += len(right[left_index])
+                left_index += 1
+                if left_index == len(left):
+                    break
+            else:
+                i += 1
+                j += 1
+        return ''.join(new_string)  # Convert back to string
+    
+    def initialize_multi_string(self):
+        """
+        Initializes the generator with the grammar system.
         """
         multi_string = {}
-
         # Initialize multi-string for all instruments
         for instrument_name, instrument in self.grammar_system.instruments.items():
             multi_string[instrument_name] = {
                 "final_string": [instrument.start],  # Start with the start symbol
                 "steps": []
-            }
+        }
+        
+        return multi_string
+    
+    def apply_structure_transformation_rules(self, current_string, sorted_structure_rules, instrument_name, steps, multi_string):
+        """
+        Applies structure transformation rules to the current string iteratively.
 
-        # Get the first instrument name
-        first_instrument_name = next(iter(self.grammar_system.instruments))
+        This method processes a list of structure rules, replacing the left-hand side of each rule
+        with its corresponding right-hand side in the current string. It supports both direct
+        and scattered matches.
 
-        # Pass the first instrument name to the function
-        nonterminals = self.get_nonterminals_from_string(first_instrument_name, multi_string)
-        print(f"Nonterminals for {first_instrument_name}: {nonterminals}")
+        Args:
+            current_string (list): The current string representation of structures.
+            sorted_structure_rules (list): A list of structure rules sorted by the length of their left-hand side.
+            instrument_name (str): The name of the instrument being processed.
+            steps (list): A list to record the steps of rule application.
+            multi_string (dict): A dictionary containing the multi-string representation for all instruments.
+
+        Returns:
+            dict: The updated multi_string with the transformed structures.
+        """
+        # Apply structure rules iteratively
+        while True:
+            rule_applied = False
+            for rule in sorted_structure_rules:
+                left = rule["left"]
+                right = rule["right"]
+                print(f"Current string: {current_string}")
+                print(f"Trying to apply structure rule: {left} -> {right}")
+
+                # Check if the left side of the rule matches the current string
+                match_index = current_string.find(''.join(left))                    
+                if match_index != -1:
+                    # Replace the left side with the right side at the specific position
+                    new_string = (
+                        current_string[:match_index] +
+                        ''.join([str(note) for note in right]) +
+                        current_string[match_index + len(''.join(left)):]
+                    )
+                    steps.append(f"Applied structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                    current_string = new_string
+                    rule_applied = True
+                    break
+                else:
+                    # Check if the left side matches in a scattered manner
+                    if self.is_scattered_match(current_string, left):
+                        new_string = self.replace_scattered_strucutre_symbols(current_string, left, right)
+                        steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                        current_string = new_string
+                        rule_applied = True
+                    else:
+                        print("No match found for scattered structure rule")
+
+            # Update the final string in multi_string
+            multi_string[instrument_name]["final_string"][0] = current_string
+            # Break the loop if no rule was applied
+            if not rule_applied:
+                break
+        return multi_string, current_string, steps
+    
+    def apply_tone_transformation_rules(self, current_string, sorted_tone_rules, instrument_name, steps, multi_string):
+        """
+        Applies tone transformation rules to the current string iteratively.
+
+        This method processes a list of tone rules, replacing the left-hand side of each rule
+        with its corresponding right-hand side in the current string. It supports both direct
+        and scattered matches.
+
+        Args:
+            current_string (list): The current string representation of tones.
+            sorted_tone_rules (list): A list of tone rules sorted by the length of their left-hand side.
+            instrument_name (str): The name of the instrument being processed.
+            steps (list): A list to record the steps of rule application.
+            multi_string (dict): A dictionary containing the multi-string representation for all instruments.
+
+        Returns:
+            dict: The updated multi_string with the transformed tones.
+        """
+        while True:
+            rule_applied = False
+            # Apply tone rules iteratively
+            for rule in sorted_tone_rules:
+                left = rule["left"]
+                right = rule["right"]
+                print(f"Current string: {current_string}")
+                print(f"Trying to apply structure rule: {left} -> {right}")
+                
+                # Check if the left side of the rule matches the current string
+                match_index = self.find_sublist(current_string, left)
+                if match_index != -1:
+                    # TODO: Handle the case where left is a list of notes
+                    print(f"SINGLE Matched {left} at position {match_index}")
+                    rule_applied = True
+                    break
+                else:
+                    # Check if the left side matches in a scattered manner
+                    if self.is_scattered_match_list(current_string, left):
+                        # Convert back to string
+                        steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                        current_string = self.replace_scattered_tone_rule(current_string, left, right)
+                        rule_applied = True
+                    else:
+                        print("No match found for scattered tone rule")
+                        
+            # Update the final string in multi_string
+            multi_string[instrument_name]["final_string"][0] = current_string
+            # Break the loop if no rule was applied
+            if not rule_applied:
+                break
+                
+        return multi_string
+
+    def generate_music(self):
+        """
+        Generates multi-string music representation based on the grammar system.
+        """
+        multi_string = self.initialize_multi_string()
 
         # Loop rules and find rule for current nonterminal
         for instrument_name, instrument in self.grammar_system.instruments.items():
@@ -122,65 +289,13 @@ class Generator:
                 reverse=True
             )
 
-            # Apply structure rules iteratively
-            while True:
-                rule_applied = False
-                for rule in sorted_structure_rules:
-                    left = rule["left"]
-                    right = rule["right"]
-                    print(f"Current string: {current_string}")
-                    print(f"Trying to apply structure rule: {left} -> {right}")
-
-                    # Check if the left side of the rule matches the current string
-                    match_index = current_string.find(''.join(left))                    
-                    if match_index != -1:
-                        # Replace the left side with the right side at the specific position
-                        new_string = (
-                            current_string[:match_index] +
-                            ''.join([str(note) for note in right]) +
-                            current_string[match_index + len(''.join(left)):]
-                        )
-                        steps.append(f"Applied structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
-                        current_string = new_string
-                        rule_applied = True
-                        break
-                    else:
-                        # Check if the left side matches in a scattered manner
-                        if self.is_scattered_match(current_string, left):
-                            # Replace only the symbols in 'left' with the corresponding symbols in 'right'
-                            new_string = list(current_string)  # Convert to list for mutable operations
-                            left_index = 0
-                            i = 0
-                            j = 0
-                            while i < len(current_string):
-                                if current_string[i:i + len(left[left_index])] == left[left_index]:
-                                    print(f"Matched {left[left_index]} at position {i}")
-                                    # Insert extra white space after the matched substring
-                                    new_string[j + len(left[left_index]):j + len(left[left_index])] = [' '] * len(left[left_index])
-                                    # Replace the matched substring with the corresponding symbol from 'right'
-                                    new_string[j:j + len(right[left_index])] = list(str(right[left_index]))
-                                    i += len(left[left_index])
-                                    j += len(right[left_index])
-                                    left_index += 1
-                                    if left_index == len(left):
-                                        break
-                                else:
-                                    i += 1
-                                    j += 1
-                            # Convert back to string
-                            new_string = ''.join(new_string)
-                            steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
-                            current_string = new_string
-                            rule_applied = True
-                        else:
-                            print("No match found for scattered structure rule")
-
-                # Update the final string in multi_string
-                multi_string[instrument_name]["final_string"][0] = current_string
-
-                # Break the loop if no rule was applied
-                if not rule_applied:
-                    break
+            multi_string, current_string, steps = self.apply_structure_transformation_rules(
+                current_string,
+                sorted_structure_rules,
+                instrument_name,
+                steps,
+                multi_string
+            )
         
         # Apply tone rules to generate tones
         for instrument_name, instrument in self.grammar_system.instruments.items():
@@ -193,67 +308,13 @@ class Generator:
                 key=lambda rule: sum(len(nt) for nt in rule["left"]),
                 reverse=True
             )
-            print(f"Sorted tone rules: {sorted_tone_rules}")
             
-            while True:
-                #print(f"Sorted tone rules: {sorted_tone_rules}")
-                rule_applied = False
-                # Apply tone rules iteratively
-                for rule in sorted_tone_rules:
-                    left = rule["left"]
-                    right = rule["right"]
-                    print(f"Current string: {current_string}")
-                    print(f"Trying to apply structure rule: {left} -> {right}")
-                    
-                    # Check if the left side of the rule matches the current string
-                    match_index = self.find_sublist(current_string, left)
-                    if match_index != -1:
-                        print(f"SINGLE Matched {left} at position {match_index}")
-                        rule_applied = True
-                        break
-                    else:
-                        # Check if the left side matches in a scattered manner
-                        if self.is_scattered_match_list(current_string, left):
-                            # Replace only the symbols in 'left' with the corresponding symbols in 'right'
-                            new_string = list(current_string)  # Convert to list for mutable operations
-                            left_index = 0
-                            i = 0
-                            j = 0
-                            while i < len(current_string):
-                                if list(current_string[i:i + len(left[left_index])]) == list(left[left_index]):
-                                    if len(left[left_index]) > 1:
-                                        # remove following characters
-                                        new_string[j:j + len(left[left_index])] = [' '] * (len(left[left_index]) - 1)
-                                        print(new_string)
-                                        # apply the right side
-                                        new_string[j] = right[left_index]
-                                        print(new_string)
-                                        j += 0
-                                    else:
-                                        # replace the matched substring with the corresponding symbol from 'right'
-                                        print(f"Replacing {new_string[j]} with {right[left_index]}")
-                                        new_string[j] = right[left_index]
-                                        j += 1
-                                    left_index += 1
-                                    i += 1
-                                    if left_index == len(left):
-                                        break
-                                else:
-                                    i += 1
-                                    j += 1
-                            # Convert back to string
-                            steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
-                            current_string = new_string
-                            rule_applied = True
-                        else:
-                            print("No match found for scattered tone rule")
-                            
-
-                # Update the final string in multi_string
-                multi_string[instrument_name]["final_string"][0] = current_string
-                # Break the loop if no rule was applied
-                if not rule_applied:
-                    break
-
+            multi_string = self.apply_tone_transformation_rules(
+                current_string,
+                sorted_tone_rules,
+                instrument_name,
+                steps,
+                multi_string
+            )
 
         return multi_string
