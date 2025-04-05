@@ -103,10 +103,8 @@ class Generator:
                 if len(left[left_index]) > 1:
                     # remove following characters
                     new_string[j:j + len(left[left_index])] = [' '] * (len(left[left_index]) - 1)
-                    print(new_string)
                     # apply the right side
                     new_string[j] = right[left_index]
-                    print(new_string)
                     j += 0
                 else:
                     # replace the matched substring with the corresponding symbol from 'right'
@@ -249,15 +247,16 @@ class Generator:
                 # Check if the left side of the rule matches the current string
                 match_index = self.find_sublist(current_string, left)
                 if match_index != -1:
-                    # TODO: Handle the case where left is a list of notes
-                    print(f"SINGLE Matched {left} at position {match_index}")
+                    # Replace the left side with the right side at the specific position
+                    steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                    current_string[match_index] = right[0]
                     rule_applied = True
                     break
                 else:
                     # Check if the left side matches in a scattered manner
                     if self.is_scattered_match_list(current_string, left):
                         # Convert back to string
-                        steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                        steps.append(f"Applied scattered tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         current_string = self.replace_scattered_tone_rule(current_string, left, right)
                         rule_applied = True
                     else:
