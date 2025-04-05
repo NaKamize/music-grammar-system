@@ -1,5 +1,6 @@
 from grammar.parser import Parser
 from grammar.generator import Generator
+from midi.midi_writer import MidiWriter
 
 class Commands:
     def execute_command(self, command_name, *args):
@@ -42,3 +43,7 @@ class Commands:
             print("  Steps:")
             for step in result["steps"]:
                 print(f"    {step}")
+        
+        # Write the multi_string to a MIDI file
+        midi_writer = MidiWriter(multi_string)
+        midi_writer.write_to_midi("output.mid")
