@@ -53,8 +53,16 @@ class MidiWriter:
                         track.append(Message('note_on', note=pitch, velocity=velocity, time=0))
                         track.append(Message('note_off', note=pitch, velocity=0, time=length))
                     else:
-                        # Handle chord (if needed in the future)
-                        pass
+                        # Handle chords 
+                        for chord in tone_rule.chord:
+                            pitch_name = chord[:-1]
+                            octave = int(chord[-1])
+                            pitch = pitch_map[pitch_name] + (octave + 1) * 12
+                            length = length_map.get(tone_rule.length, 480)
+                            velocity = dynamics_map.get(tone_rule.dynamics, 64)
+                            # Add note_on and note_off messages
+                            track.append(Message('note_on', note=pitch, velocity=velocity, time=0))
+                            track.append(Message('note_off', note=pitch, velocity=0, time=length))
 
         # Save the MIDI file
         midi_file.save(output_file)

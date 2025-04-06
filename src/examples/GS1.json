@@ -13,21 +13,21 @@
                 { "left": ["M", "M", "M"], "right": [
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ], 
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ], 
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ]
                     ] 
                 },
@@ -74,21 +74,21 @@
                 { "left": ["M", "M", "M"], "right": [
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ], 
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ], 
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ]
                     ] 
                 },
@@ -135,21 +135,21 @@
                 { "left": ["M", "M", "M"], "right": [
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ], 
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ], 
                     [
                         { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
-                        { "tone": "C2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
+                        { "tone": "D2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "E2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" },
+                        { "tone": "F2", "length": "quarter", "octave": 2, "dynamics": "piano", "variation": "none" }
                     ]
                     ] 
                 },
