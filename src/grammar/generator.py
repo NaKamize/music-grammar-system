@@ -233,7 +233,7 @@ class Generator:
             )
             
             states = self.grammar_system.states
-            sync_state = [item for item in states if item.get('piano_bass') == rule_index]
+            sync_state = [item for item in states if item.get('Piano_bass') == rule_index]
             break
         
         return multi_string, current_string, steps, sync_state
@@ -298,7 +298,7 @@ class Generator:
             )
             
             states = self.grammar_system.states
-            sync_state = [item for item in states if item.get('piano_bass') == (rule_index + self.structure_rule_counts[instrument_name])]
+            sync_state = [item for item in states if item.get('Piano_bass') == (rule_index + self.structure_rule_counts[instrument_name])]
             break
                 
         return multi_string, sync_state
