@@ -17,13 +17,17 @@ class Instrument:
 
 
 class ToneRule:
-    def __init__(self, tone=None, length=None, octave=None, dynamics=None, variation=None, chord=None):
+    def __init__(self, tone=None, length=None, octave=None, dynamics=None, variation=None, chord=None, operations=None):
         self.tone = tone
         self.length = length
         self.octave = octave
         self.dynamics = dynamics
         self.variation = variation
         self.chord = chord
+        self.operations = operations
+        
+    def set_tone_name(self, tone_name):
+        self.tone = tone_name
 
 
 class Parser:
@@ -51,7 +55,8 @@ class Parser:
                                     octave=tone.get("octave"),
                                     dynamics=tone.get("dynamics"),
                                     variation=tone.get("variation"),
-                                    chord=tone.get("chord")
+                                    chord=tone.get("chord"),
+                                    operations=tone.get("operation")
                                 ) for tone in tones
                             ] for tones in rule["right"]
                         ]

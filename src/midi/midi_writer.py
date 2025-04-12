@@ -18,6 +18,10 @@ class MidiWriter:
     def get_program_number(self, instrument_name):
         normalized_name = self.normalize_instrument_name(instrument_name)
         return self.instrument_map.get(normalized_name, 0)
+    
+    def get_corrected_pitch(self, pitch, transpose):
+        """Apply transposition to the pitch."""
+        return pitch + transpose           
 
     def write_to_midi(self, output_file):
         """
@@ -63,9 +67,10 @@ class MidiWriter:
             string_to_interpret = tracks['final_string'][0]
             for tone_rule in string_to_interpret:
                 for tone in tone_rule:
-                    if tone.tone is not None:
+                    if tone.tone is not None:                                
                         # Extract pitch, length, and dynamics
-                        pitch = pitch_map.get(tone.tone, 0) + (tone.octave + octave_shift) * 12 
+                        transpose = tone.operations.get('transpose', 1) if tone.operations != "none" else 0
+                        pitch = self.get_corrected_pitch(pitch_map.get(tone.tone, 0), transpose) + (tone.octave + octave_shift) * 12 
                         length = length_map.get(tone.length, 480)
                         dynamics = dynamics_map.get(tone.dynamics, 64)
                         # Note on
@@ -77,7 +82,8 @@ class MidiWriter:
                         if tone.chord is not None:  # Ensure tone.chord is not None
                             for chord_tone in tone.chord:
                                 # Extract pitch, length, and dynamics for each note in the chord
-                                pitch = pitch_map.get(chord_tone, 0) + (1 + octave_shift) * 12
+                                transpose = tone.operations.get('transpose', 1) if tone.operations != "none" else 0
+                                pitch = self.get_corrected_pitch(pitch_map.get(chord_tone, 0), transpose) + (1 + octave_shift) * 12
                                 length = length_map.get(tone.length, 480)
                                 dynamics = dynamics_map.get(tone.dynamics, 64)
 

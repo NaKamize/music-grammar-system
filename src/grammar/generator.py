@@ -1,5 +1,5 @@
 import random
-
+from .tone_operations import ToneOperator 
 
 class Generator:
     def __init__(self, grammar_system, iterations=10):
@@ -113,11 +113,29 @@ class Generator:
                     # remove following characters
                     new_string[j:j + len(left[left_index])] = [' '] * (len(left[left_index]) - 1)
                     # apply the right side
+                    """for i, tone in enumerate(right[left_index]):
+                        if isinstance(tone.operations, dict) and tone.operations.get('counterpoint', False):
+                            operator = ToneOperator()
+                            right[left_index][i].set_tone_name(operator.counterpoint([tone.tone])[0])
+                            print(right[left_index][i].tone)
+                            print(operator.counterpoint([tone.tone])[0])"""
                     new_string[j] = right[left_index]
                     j += 0
                 else:
                     # replace the matched substring with the corresponding symbol from 'right'
                     print(f"Replacing {new_string[j]} with {right[left_index]}")
+                    for rule in right[left_index]:
+                        if isinstance(rule.operations, dict) and rule.operations.get('counterpoint', False) and rule.tone:
+                            operator = ToneOperator()
+                            counter_point = operator.counterpoint(rule.tone)
+                            rule.set_tone_name(counter_point)
+                            print(rule.tone)
+                            print(counter_point)
+                    """for i, tone in enumerate(right[left_index]):
+                        if isinstance(tone.operations, dict) and tone.operations.get('counterpoint', False):
+                            operator = ToneOperator()
+                            print(right[left_index][i].tone)
+                            print(operator.counterpoint([tone.tone])[0])"""
                     new_string[j] = right[left_index]
                     j += 1
                 left_index += 1

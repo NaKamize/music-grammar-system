@@ -12,22 +12,22 @@
             "tone_rules": [
                 { "left": ["M", "M", "M"], "right": [
                     [
-                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "p", "operation": {"transpose": 1}},
-                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "p", "operation": {"transpose": 1}},
-                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "p", "operation": {"transpose": 1}},
-                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "p", "operation": {"transpose": 1}}
+                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"transpose": 1}},
+                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"transpose": 1}},
+                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"transpose": 1}},
+                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"transpose": 1}}
                     ], 
                     [
-                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" }
+                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": {"counterpoint": true} }
                     ], 
                     [
-                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "p", "operation": "none" }
+                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" }
                     ]
                     ] 
                 },
