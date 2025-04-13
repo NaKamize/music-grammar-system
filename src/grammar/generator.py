@@ -94,7 +94,7 @@ class Generator:
         """
         
         for i in range(len(haystack) - len(needle) + 1):
-            if haystack[i:i + len(needle)] == needle:
+            if haystack[i:i + len(needle)] == needle and len(needle) == 1:
                 return i
         return -1
     
@@ -102,6 +102,16 @@ class Generator:
         """
         Applies the scattered tone rule by replacing the left side with the right side in the current string.
         """
+        
+        def apply_counterpoint_if_needed(rule):
+            """
+            Applies the counterpoint operation to a rule if the conditions are met.
+            """
+            if isinstance(rule.operations, dict) and rule.operations.get('counterpoint', False) and rule.tone:
+                operator = ToneOperator()
+                counter_point = operator.counterpoint(rule.tone)
+                rule.set_tone_name(counter_point)
+        
         # Replace only the symbols in 'left' with the corresponding symbols in 'right'
         new_string = list(current_string)  # Convert to list for mutable operations
         left_index = 0
@@ -113,29 +123,15 @@ class Generator:
                     # remove following characters
                     new_string[j:j + len(left[left_index])] = [' '] * (len(left[left_index]) - 1)
                     # apply the right side
-                    """for i, tone in enumerate(right[left_index]):
-                        if isinstance(tone.operations, dict) and tone.operations.get('counterpoint', False):
-                            operator = ToneOperator()
-                            right[left_index][i].set_tone_name(operator.counterpoint([tone.tone])[0])
-                            print(right[left_index][i].tone)
-                            print(operator.counterpoint([tone.tone])[0])"""
+                    for rule in right[left_index]:
+                        apply_counterpoint_if_needed(rule)
                     new_string[j] = right[left_index]
                     j += 0
                 else:
                     # replace the matched substring with the corresponding symbol from 'right'
                     print(f"Replacing {new_string[j]} with {right[left_index]}")
                     for rule in right[left_index]:
-                        if isinstance(rule.operations, dict) and rule.operations.get('counterpoint', False) and rule.tone:
-                            operator = ToneOperator()
-                            counter_point = operator.counterpoint(rule.tone)
-                            rule.set_tone_name(counter_point)
-                            print(rule.tone)
-                            print(counter_point)
-                    """for i, tone in enumerate(right[left_index]):
-                        if isinstance(tone.operations, dict) and tone.operations.get('counterpoint', False):
-                            operator = ToneOperator()
-                            print(right[left_index][i].tone)
-                            print(operator.counterpoint([tone.tone])[0])"""
+                        apply_counterpoint_if_needed(rule)
                     new_string[j] = right[left_index]
                     j += 1
                 left_index += 1
@@ -212,7 +208,7 @@ class Generator:
                 left = rule["left"]
                 right = rule["right"]
                 print(f"Current string: {current_string}")
-                print(f"Trying to apply structure rule: {left} -> {right}")
+                print(f"Trying to apply transform rule: {left} -> {right}")
 
                 # Check if the left side of the rule matches the current string
                 match_index = current_string.find(''.join(left))                    
@@ -251,7 +247,7 @@ class Generator:
             )
             
             states = self.grammar_system.states
-            sync_state = [item for item in states if item.get('Piano_bass') == rule_index]
+            sync_state = [item for item in states if item.get('Piano_treble') == rule_index]
             break
         
         return multi_string, current_string, steps, sync_state
@@ -281,7 +277,7 @@ class Generator:
                 left = rule["left"]
                 right = rule["right"]
                 print(f"Current string: {current_string}")
-                print(f"Trying to apply structure rule: {left} -> {right}")
+                print(f"Trying to apply transform rule: {left} -> {right}")
                 
                 # Check if the left side of the rule matches the current string
                 match_index = self.find_sublist(current_string, left)
@@ -316,7 +312,7 @@ class Generator:
             )
             
             states = self.grammar_system.states
-            sync_state = [item for item in states if item.get('Piano_bass') == (rule_index + self.structure_rule_counts[instrument_name])]
+            sync_state = [item for item in states if item.get('Piano_treble') == (rule_index + self.structure_rule_counts[instrument_name])]
             break
                 
         return multi_string, sync_state

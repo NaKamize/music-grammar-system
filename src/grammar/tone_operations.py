@@ -1,17 +1,6 @@
 import random
 
-class ToneOperator:
-    @staticmethod
-    def transpose(tone, semitones):
-        """Transpose the tone by a given number of semitones."""
-        pitch_classes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-        pitch, octave = tone.pitch[:-1], int(tone.pitch[-1])
-        index = pitch_classes.index(pitch)
-        new_index = (index + semitones) % 12
-        new_octave = octave + (index + semitones) // 12
-        tone.pitch = pitch_classes[new_index] + str(new_octave)
-        return tone
-    
+class ToneOperator:    
     @staticmethod
     def counterpoint(note):
         # Basic mapping of note names to semitone values in C major

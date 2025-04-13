@@ -105,8 +105,8 @@
                     ] 
                 },
                 { "left": ["M1", "M2"], "right": [
-                    [{ "tone": "C", "length": "whole", "octave": 2, "dynamics": "p", "operation": "none" }],
-                    [{ "tone": "C", "length": "whole", "octave": 2, "dynamics": "p", "operation": "none" }]
+                    [{ "tone": "C", "length": "whole", "octave": 2, "dynamics": "p", "operation": {"counterpoint": true} }],
+                    [{ "tone": "C", "length": "whole", "octave": 2, "dynamics": "p", "operation": {"counterpoint": true} }]
                     ] 
                 },
                 { "left": ["H1", "H2"], "right": [
