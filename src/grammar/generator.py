@@ -155,13 +155,15 @@ class Generator:
         while i < len(current_string):
             if current_string[i:i + len(left[left_index])] == left[left_index]:
                 print(f"Matched {left[left_index]} at position {i}")
-                # Insert extra white space after the matched substring
-                new_string[j + len(left[left_index]):j + len(left[left_index])] = [' '] * len(left[left_index])
+                
                 # Replace the matched substring with the corresponding symbol from 'right'
-                new_string[j:j + len(right[left_index])] = list(str(right[left_index]))
-                i += len(left[left_index])
-                j += len(right[left_index])
-                left_index += 1
+                new_string[j:j + len(left[left_index])] = list(str(right[left_index]))
+                
+                # Adjust the indices based on the length difference
+                i += len(left[left_index])  # Move `i` forward by the length of the matched substring
+                j += len(right[left_index])  # Move `j` forward by the length of the replacement
+                
+                left_index += 1  # Move to the next symbol in the `left` list
                 if left_index == len(left):
                     break
             else:
