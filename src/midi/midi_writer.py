@@ -30,8 +30,8 @@ class MidiWriter:
         midi_file = MidiFile()
 
         pitch_map = {
-            'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5,
-            'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11
+            'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5,
+            'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11
         }
         length_map = {
             'whole': 1920,  # 4 beats
@@ -61,7 +61,7 @@ class MidiWriter:
             track.append(Message('program_change', program=program, channel=instrument_index, time=0))
             print(f"Writing track for instrument: {instrument_name} (program {program})")
             
-            octave_shift = 2 if "Piano_bass" == instrument_name else 4
+            octave_shift = 3 if "Piano_bass" == instrument_name else 4
             
             #self.write_notes_to_track(track, tracks, instrument_index)
             string_to_interpret = tracks['final_string'][0]
