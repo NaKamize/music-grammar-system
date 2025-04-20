@@ -31,6 +31,30 @@ class ToneRule:
 
 
 class Parser:
+    
+    def parse_tone_or_nonterminal(self, tone):
+        """
+        Parses an element from the 'right' list. If it's a dictionary, it creates a ToneRule.
+        If it's a string, it treats it as a nonterminal.
+        """
+        if isinstance(tone, dict):
+            # Parse as a ToneRule
+            return ToneRule(
+                tone=tone.get("tone"),
+                length=tone.get("length"),
+                octave=tone.get("octave"),
+                dynamics=tone.get("dynamics"),
+                variation=tone.get("variation"),
+                chord=tone.get("chord"),
+                operations=tone.get("operation")
+            )
+        elif isinstance(tone, str):
+            # Parse as a nonterminal
+            return tone  # Return the nonterminal as-is
+        else:
+            # Handle invalid cases
+            raise ValueError(f"Invalid tone or nonterminal: {tone}")
+        
     def parse_grammar(self, file_path):
         """
         Parses the JSON grammar file and returns a GrammarSystem object.
@@ -63,16 +87,10 @@ class Parser:
                         "left": rule["left"],
                         "right": [
                             [
-                                ToneRule(
-                                    tone=tone.get("tone"),
-                                    length=tone.get("length"),
-                                    octave=tone.get("octave"),
-                                    dynamics=tone.get("dynamics"),
-                                    variation=tone.get("variation"),
-                                    chord=tone.get("chord"),
-                                    operations=tone.get("operation")
-                                ) for tone in tones
-                            ] for tones in rule["right"]
+                                self.parse_tone_or_nonterminal(tone)
+                                for tone in tones
+                            ]
+                            for tones in rule["right"]
                         ]
                     }
                     tone_rules.append(parsed_rule)

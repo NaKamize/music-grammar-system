@@ -21,13 +21,18 @@ class Generator:
         Checks if the left side of the rule contains any nonterminals that are also present in the right side.
         Raises a ValueError if such a case is found.
         """
-        print(f"Checking left: {left}, nonterminals: {self.grammar_system.instruments[instrument_name].nonterminals}")
+        
         if left is not None and left not in self.grammar_system.instruments[instrument_name].nonterminals:
             raise ValueError(f"Left side {left} not found in nonterminals")
+        
         if right is not None:
             for r in right:
+                if isinstance(r, str):
+                    continue  # Skip strings (nonterminals)
+        
                 if r.tone is not None and r.tone not in self.grammar_system.instruments[instrument_name].terminals:
                     raise ValueError(f"Right side tone {r.tone} not found in terminals")
+                
                 if r.chord is not None and r.chord not in self.grammar_system.instruments[instrument_name].terminals:
                     raise ValueError(f"Right side chord {r.chord} not found in terminals")
         
@@ -123,7 +128,7 @@ class Generator:
             """
             Applies the counterpoint operation to a rule if the conditions are met.
             """
-            if isinstance(rule.operations, dict) and rule.operations.get('counterpoint', False) and rule.tone:
+            if not isinstance(rule, str) and isinstance(rule.operations, dict) and rule.operations.get('counterpoint', False) and rule.tone:
                 operator = ToneOperator()
                 counter_point = operator.counterpoint(rule.tone)
                 rule.set_tone_name(counter_point)
@@ -347,6 +352,39 @@ class Generator:
         current_index = instrument_names.index(current_instrument_name)
         next_index = (current_index + 1) % len(instrument_names)  # Loop back to the first instrument
         return instrument_names[next_index]
+    
+    def check_for_remaining_nonterminals(self, multi_string):
+        """
+        Checks if there are any nonterminals left in the multi_string that need to be rewritten.
+
+        Args:
+            multi_string (dict): The multi-string representation of the grammar system.
+
+        Returns:
+            bool: True if there are nonterminals left, False otherwise.
+        """
+        for instrument_name, instrument_data in multi_string.items():
+            # Get the nonterminals for the current instrument
+            nonterminals = set(
+                tuple(nt) if isinstance(nt, list) else nt
+                for nt in self.grammar_system.instruments[instrument_name].nonterminals
+            )
+            print(nonterminals)
+            
+            # Get the final string for the current instrument
+            final_string = instrument_data["final_string"][0]
+            
+            # Check if any symbol in the final string is a nonterminal
+            for symbol in final_string:
+                # Convert symbol to a tuple if it's a list
+                symbol_to_check = tuple(symbol) if isinstance(symbol, list) else symbol
+                print(symbol_to_check)
+                for sym in symbol_to_check:
+                    if isinstance(sym, str) and sym in nonterminals:
+                        print(f"Nonterminal '{sym}' found in instrument '{instrument_name}'")
+                        return True
+            
+        return False
 
     def generate_music(self):
         """
@@ -408,5 +446,13 @@ class Generator:
             
             instrument_name = self.get_next_instrument(instrument_name, sync_state)
             instrument = self.grammar_system.instruments[instrument_name]
-
+            
+        # This should be the end 
+        print("This is the end BUT NOT FOR KNOW !!!!!!")
+        # Check the final strings if there are non-terminal left
+        if self.check_for_remaining_nonterminals(multi_string):
+            print("There are nonterminals left to be rewritten.")
+        else:
+            print("All nonterminals have been rewritten.")
+        
         return multi_string

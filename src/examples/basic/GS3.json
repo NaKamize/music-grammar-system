@@ -2,7 +2,7 @@
     "instruments": {
         "Piano_treble": {
             "nonterminals": ["S", "X", "Y", "M", "N", "N1", "M1", "M2", "N2"],
-            "terminals": ["C", "D", "E", "F", "G", ["D", "F", "A"], ["C", "E", "G"]],
+            "terminals": ["C", "D", "E", "F", "G", "B", "A", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S",
             "structure_rules": [
                 { "left": ["S"], "right": ["XXYX"] },
