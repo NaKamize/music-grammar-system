@@ -14,6 +14,22 @@ class Generator:
         print(f"Structure rule counts: {self.structure_rule_counts}")
         self.finished = False
         self.first_instrument = list(self.grammar_system.instruments.keys())[0]
+        self.current_instrument = None  # This was added to keep track of right terminals/nonterminals
+        
+    def terminal_nonterminal_check(self, left = None, right = None, instrument_name = None):
+        """
+        Checks if the left side of the rule contains any nonterminals that are also present in the right side.
+        Raises a ValueError if such a case is found.
+        """
+        print(f"Checking left: {left}, nonterminals: {self.grammar_system.instruments[instrument_name].nonterminals}")
+        if left is not None and left not in self.grammar_system.instruments[instrument_name].nonterminals:
+            raise ValueError(f"Left side {left} not found in nonterminals")
+        if right is not None:
+            for r in right:
+                if r.tone is not None and r.tone not in self.grammar_system.instruments[instrument_name].terminals:
+                    raise ValueError(f"Right side tone {r.tone} not found in terminals")
+                if r.chord is not None and r.chord not in self.grammar_system.instruments[instrument_name].terminals:
+                    raise ValueError(f"Right side chord {r.chord} not found in terminals")
         
     def get_nonterminals_from_string(self, instrument_name, multi_string):
         """
@@ -98,7 +114,7 @@ class Generator:
                 return i
         return -1
     
-    def replace_scattered_tone_rule(self, current_string, left, right):
+    def replace_scattered_tone_rule(self, current_string, left, right, instrument_name):
         """
         Applies the scattered tone rule by replacing the left side with the right side in the current string.
         """
@@ -132,6 +148,8 @@ class Generator:
                     print(f"Replacing {new_string[j]} with {right[left_index]}")
                     for rule in right[left_index]:
                         apply_counterpoint_if_needed(rule)
+                    # Check if the left side is in the nonterminals if not throw an error
+                    self.terminal_nonterminal_check(left[left_index], right[left_index], instrument_name)
                     new_string[j] = right[left_index]
                     j += 1
                 left_index += 1
@@ -210,6 +228,7 @@ class Generator:
                 left = rule["left"]
                 right = rule["right"]
                 print(f"Current string: {current_string}")
+                print(instrument_name)
                 print(f"Trying to apply transform rule: {left} -> {right}")
 
                 # Check if the left side of the rule matches the current string
@@ -294,7 +313,7 @@ class Generator:
                     if self.is_scattered_match_list(current_string, left):
                         # Convert back to string
                         steps.append(f"Applied scattered tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
-                        current_string = self.replace_scattered_tone_rule(current_string, left, right)
+                        current_string = self.replace_scattered_tone_rule(current_string, left, right, instrument_name)
                         rule_applied = True
                         break
                     else:
@@ -341,6 +360,7 @@ class Generator:
         # Get the first instrument name and instrument by itself
         instrument_name = list(self.grammar_system.instruments.keys())[0]
         instrument = self.grammar_system.instruments[instrument_name]
+        self.current_instrument = instrument_name
         
         # Loop rules and find rule for current nonterminal
         while self.finished is False:

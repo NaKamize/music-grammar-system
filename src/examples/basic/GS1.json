@@ -2,7 +2,7 @@
     "instruments": {
         "Piano_treble": {
             "nonterminals": ["S", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["C", "D", "E", "F", "G"],
+            "terminals": ["C", "D", "E", "F", "G", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S",
             "structure_rules": [
                 { "left": ["S"], "right": ["AABA"] },
@@ -63,7 +63,7 @@
         },
         "Piano_bass": {
             "nonterminals": ["S1", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["C4", "D4", "E4", "F4", "G4"],
+            "terminals": ["C", "D", "E", "F", "G", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S1",
             "structure_rules": [
                 { "left": ["S1"], "right": ["AABA"] },
@@ -124,7 +124,7 @@
         },
         "Violin": {
             "nonterminals": ["S2", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["G", "A", "B", "C"],
+            "terminals": ["C", "F", "G", "D", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S2",
             "structure_rules": [
                 { "left": ["S2"], "right": ["AABA"] },
@@ -137,17 +137,17 @@
                         { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
                         { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
                         { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "H", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
                     ],
                     [
                         { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
                         { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
                         { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "H", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
                     ],
                     [
-                        { "tone": "H", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
                         { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
                         { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
                     ]

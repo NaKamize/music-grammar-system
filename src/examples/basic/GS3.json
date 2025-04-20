@@ -1,13 +1,13 @@
 {
     "instruments": {
         "Piano_treble": {
-            "nonterminals": ["S", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["C", "D", "E", "F", "G"],
+            "nonterminals": ["S", "X", "Y", "M", "N", "N1", "M1", "M2", "N2"],
+            "terminals": ["C", "D", "E", "F", "G", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S",
             "structure_rules": [
-                { "left": ["S"], "right": ["AABA"] },
-                { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
-                { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
+                { "left": ["S"], "right": ["XXYX"] },
+                { "left": ["X", "X", "X"], "right": ["MN", "MN", "MN"] },
+                { "left": ["Y"], "right": ["N1", "M1", "M2", "N2"] }
             ],
             "tone_rules": [
                 { "left": ["M", "M", "M"], "right": [
@@ -31,7 +31,7 @@
                     ]
                     ] 
                 },
-                { "left": ["H", "H", "H"], "right": [
+                { "left": ["N", "N", "N"], "right": [
                     [
                         { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
                     ], 
@@ -48,7 +48,7 @@
                     [{ "tone": "C", "length": "whole", "octave": 5, "dynamics": "p", "operation": "none" }]
                     ] 
                 },
-                { "left": ["H1", "H2"], "right": [
+                { "left": ["N1", "N2"], "right": [
                     [
                         { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
                         { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
@@ -62,16 +62,16 @@
             ]
         },
         "Piano_bass": {
-            "nonterminals": ["S1", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["C", "D", "E", "F", "G"],
+            "nonterminals": ["S1", "X", "Y", "M", "N", "N1", "M1", "M2", "N2"],
+            "terminals": ["C", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S1",
             "structure_rules": [
-                { "left": ["S1"], "right": ["AABA"] },
-                { "left": ["A", "A", "A"], "right": ["HH", "HH", "HH"] },
-                { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
+                { "left": ["S1"], "right": ["XXYX"] },
+                { "left": ["X", "X", "X"], "right": ["NN", "NN", "NN"] },
+                { "left": ["Y"], "right": ["N1", "M1", "M2", "N2"] }
             ],
             "tone_rules": [
-                { "left": ["H", "H", "H"], "right": [
+                { "left": ["N", "N", "N"], "right": [
                     [
                         { "chord": ["D", "F", "A"], "length": "whole", "octave": 3, "dynamics": "ff", "operation": "none" }
                     ], 
@@ -88,7 +88,7 @@
                     [{ "tone": "C", "length": "whole", "octave": 3, "dynamics": "p", "operation": {"counterpoint": true} }]
                     ] 
                 },
-                { "left": ["H1", "H2"], "right": [
+                { "left": ["N1", "N2"], "right": [
                     [
                         { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": "none" },
                         { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": "none" }

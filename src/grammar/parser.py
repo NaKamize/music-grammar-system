@@ -42,6 +42,20 @@ class Parser:
             # Parse instruments
             instruments = {}
             for instrument_name, instrument_data in data["instruments"].items():
+                # Preprocess terminals: Convert nested lists to tuples
+                terminals = set(
+                    tuple(item) if isinstance(item, list) else item
+                    for item in instrument_data["terminals"]
+                )
+                nonterminals = set(instrument_data["nonterminals"])
+
+                # Validate that nonterminals and terminals do not overlap
+                overlap = nonterminals.intersection(terminals)
+                if overlap:
+                    raise ValueError(
+                        f"Error in instrument '{instrument_name}': "
+                        f"Symbols found in both nonterminals and terminals: {overlap}"
+                    )
                 # Parse tone rules
                 tone_rules = []
                 for rule in instrument_data["tone_rules"]:

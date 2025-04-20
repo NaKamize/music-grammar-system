@@ -2,7 +2,7 @@
     "instruments": {
         "Piano_treble": {
             "nonterminals": ["S", "A", "B", "M", "N", "M1", "N1"],
-            "terminals": ["C", "D", "E", "F", "G"],
+            "terminals": ["C", "D", "E", "F", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S",
             "structure_rules": [
                 { "left": ["S"], "right": ["ABAB"] },
@@ -53,8 +53,8 @@
             ]
         },
         "Piano_bass": {
-            "nonterminals": ["S1", "A", "B", "M", "N", "M1", "N1"],
-            "terminals": ["C", "D", "E", "F", "G"],
+            "nonterminals": ["S1", "A", "B", "P", "L"],
+            "terminals": [["C", "E", "G"]],
             "start": "S1",
             "structure_rules": [
                 { "left": ["S1"], "right": ["ABAB"] },
