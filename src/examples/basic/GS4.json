@@ -12,41 +12,41 @@
             "tone_rules": [
                 { "left": ["M", "M"], "right": [
                     [
-                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none"},
-                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none"},
-                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none"},
-                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none"}
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
                     ], 
                     [
-                        { "tone": "C", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 2, "dynamics": "ff", "operation": "none" }
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" }
                     ]
                     ] 
                 },
                 { "left": ["N", "N"], "right": [
                     [
-                        { "chord": ["D", "F", "A"], "length": "whole", "dynamics": "ff", "operation": "none" }
+                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
                     ], 
                     [
-                        { "chord": ["D", "F", "A"], "length": "whole", "dynamics": "ff", "operation": "none" }
+                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
                     ]
                     ] 
                 },
                 { "left": ["M1", "M1"], "right": [
-                    [{ "tone": "C", "length": "whole", "octave": 2, "dynamics": "p", "operation": "none" }],
-                    [{ "tone": "C", "length": "whole", "octave": 2, "dynamics": "p", "operation": "none" }]
+                    [{ "tone": "C", "length": "whole", "octave": 5, "dynamics": "p", "operation": "none" }],
+                    [{ "tone": "C", "length": "whole", "octave": 5, "dynamics": "p", "operation": "none" }]
                     ] 
                 },
                 { "left": ["N1", "N1"], "right": [
                     [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": "none" }
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
                     ],
                     [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": "none" }
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
                     ]
                     ] 
                 }
@@ -64,23 +64,23 @@
             "tone_rules": [
                 { "left": ["P", "P"], "right": [
                     [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "P"} },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "P"} }
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} }
                     ], 
                     [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "P"} },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "P"} }
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} }
                     ]
                     ] 
                 },
                 { "left": ["L", "L"], "right": [
                     [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "L"} },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "L"} }
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} }
                     ], 
                     [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "L"} },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 1, "dynamics": "mf", "operation": {"neorieman" : "L"} }
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} }
                     ]
                     ] 
                 }

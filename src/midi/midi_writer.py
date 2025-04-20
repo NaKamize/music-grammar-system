@@ -1,4 +1,7 @@
-from mido import Message, MidiFile, MidiTrack
+from mido import Message, MidiFile, MidiTrack, MetaMessage
+from utils.neo_riemann import NeoRiemannian
+from music21 import chord
+
 import re
 
 class MidiWriter:
@@ -9,7 +12,8 @@ class MidiWriter:
             "Cello": 42,
             "Flute": 73,
             "Piano": 0,
-    }
+        }
+        self.key_signature = "C"  
         
     def normalize_instrument_name(self, name):
         match = re.match(r"([A-Za-z]+)", name)  # Extracts the base name (letters only)
@@ -21,7 +25,41 @@ class MidiWriter:
     
     def get_corrected_pitch(self, pitch, transpose):
         """Apply transposition to the pitch."""
-        return pitch + transpose           
+        return pitch + transpose        
+    
+    def handle_chord_with_transformations(self, tone, current_transformed_chord, transformation_sequence, transformation_index):
+        if tone.operations != "none":
+            op = tone.operations.get('neorieman', None)
+            print(f"Neo-Riemannian operation: {op}")
+            print(f"Chord: {tone.chord}")
+
+            if op in ["P", "L", "R"]:
+                # If there is a current transformed chord, apply the operation to it
+                if current_transformed_chord is None:
+                    # Skip applying the transformation on the first chord
+                    current_transformed_chord = tone.chord  # Start with the original chord
+                else:
+                    # Create a NeoRiemannian object with the current transformed chord
+                    transformer = NeoRiemannian(current_transformed_chord)
+
+                    # Dynamically call the method based on the current transformation in the sequence
+                    transformation_function = getattr(transformer, transformation_sequence[transformation_index], None)
+                    if transformation_function:
+                        transformed_chord = transformation_function()  # Call the method
+                        print(f"Transformed chord using {transformation_sequence[transformation_index]}: {transformed_chord}")
+                        # Update the current transformed chord
+                        current_transformed_chord = [p.name for p in transformed_chord.pitches]
+
+                        # Move to the next transformation in the sequence
+                        transformation_index = (transformation_index + 1) % len(transformation_sequence)
+                    else:
+                        print(f"Invalid Neo-Riemannian operation: {op}")
+            else:
+                # Reset the transformed chord and transformation sequence if the operation is not Neo-Riemannian
+                current_transformed_chord = None
+                transformation_index = 0
+
+        return current_transformed_chord, transformation_index   
 
     def write_to_midi(self, output_file):
         """
@@ -30,8 +68,8 @@ class MidiWriter:
         midi_file = MidiFile()
 
         pitch_map = {
-            'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5,
-            'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11
+            'C': 0, 'C#': 1, 'D-': 1, 'D': 2, 'D#': 3, 'E-': 3, 'E': 4, 'F': 5,
+            'F#': 6, 'G-': 6, 'G': 7, 'G#': 8, 'A-': 8, 'A': 9, 'A#': 10, 'B-': 10, 'B': 11
         }
         length_map = {
             'whole': 1920,  # 4 beats
@@ -52,25 +90,30 @@ class MidiWriter:
         
 
         for instrument_index, (instrument_name, tracks) in enumerate(self.multi_string.items()):
+            key_signature = MetaMessage('key_signature', key=self.key_signature)
             track = MidiTrack()
+            track.append(key_signature)
             midi_file.tracks.append(track)
             # Get the program number for the instrument
             program = self.get_program_number(instrument_name)
+            print(f"Instrument: {instrument_name}, Program: {program}")
             
             # Add a program_change message
             track.append(Message('program_change', program=program, channel=instrument_index, time=0))
             print(f"Writing track for instrument: {instrument_name} (program {program})")
             
-            octave_shift = 3 if "Piano_bass" == instrument_name else 4
+            # Initialize variables to track the current transformed chord and transformation sequence
+            current_transformed_chord = None
+            transformation_sequence = ["P", "L", "R"]  # Define the rotation sequence
+            transformation_index = 0  # Start with the first transformation in the sequence
             
-            #self.write_notes_to_track(track, tracks, instrument_index)
             string_to_interpret = tracks['final_string'][0]
             for tone_rule in string_to_interpret:
                 for tone in tone_rule:
                     if tone.tone is not None:                                
                         # Extract pitch, length, and dynamics
-                        transpose = tone.operations.get('transpose', 1) if tone.operations != "none" else 0
-                        pitch = self.get_corrected_pitch(pitch_map.get(tone.tone, 0), transpose) + (tone.octave + octave_shift) * 12 
+                        transpose = tone.operations.get('transpose', 0) if tone.operations != "none" else 0
+                        pitch = self.get_corrected_pitch(pitch_map.get(tone.tone, 0), transpose) + (tone.octave + 1) * 12
                         length = length_map.get(tone.length, 480)
                         dynamics = dynamics_map.get(tone.dynamics, 64)
                         # Note on
@@ -79,11 +122,16 @@ class MidiWriter:
                         track.append(Message('note_off', note=pitch, velocity=0, channel=instrument_index, time=length))
                     else:
                         # Handle chords
-                        if tone.chord is not None:  # Ensure tone.chord is not None
-                            for chord_tone in tone.chord:
+                        if tone.chord is not None:
+                            current_transformed_chord, transformation_index = self.handle_chord_with_transformations(
+                                tone, current_transformed_chord, transformation_sequence, transformation_index
+                            )
+                                
+                            chord_to_write = current_transformed_chord if current_transformed_chord else tone.chord
+                            for chord_tone in chord_to_write:
                                 # Extract pitch, length, and dynamics for each note in the chord
-                                transpose = tone.operations.get('transpose', 1) if tone.operations != "none" else 0
-                                pitch = self.get_corrected_pitch(pitch_map.get(chord_tone, 0), transpose) + (1 + octave_shift) * 12
+                                transpose = tone.operations.get('transpose', 0) if tone.operations != "none" else 0
+                                pitch = self.get_corrected_pitch(pitch_map.get(chord_tone, 0), transpose) + (tone.octave + 1) * 12
                                 length = length_map.get(tone.length, 480)
                                 dynamics = dynamics_map.get(tone.dynamics, 64)
 
@@ -92,8 +140,8 @@ class MidiWriter:
                                 track.append(Message('note_on', note=pitch, velocity=dynamics, channel=instrument_index, time=0))
                             
                             # Add note_off messages for all notes in the chord after the specified duration
-                            for i, chord_tone in enumerate(tone.chord):
-                                pitch = pitch_map.get(chord_tone, 0) + (1 + octave_shift) * 12
+                            for i, chord_tone in enumerate(chord_to_write):
+                                pitch = pitch_map.get(chord_tone, 0) + (tone.octave + 1) * 12
                                 track.append(Message('note_off', note=pitch, velocity=64, channel=instrument_index, time=length if i == 0 else 0))
 
             

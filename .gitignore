@@ -1,2 +1,6 @@
 src/grammar/__pycache__/*
 src/cli/__pycache__/*
+src/midi/__pycache__/*
+src/utils/__pycache__/*
+src/music-env/*
+*.mid
