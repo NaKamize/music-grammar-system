@@ -11,11 +11,9 @@ class Generator:
             instrument_name: len(instrument.structure_rules)
             for instrument_name, instrument in grammar_system.instruments.items()
         }
-        print(f"Structure rule counts: {self.structure_rule_counts}")
+        
         self.finished = False
         self.first_instrument = list(self.grammar_system.instruments.keys())[0]
-        self.ending_rules = None
-        self.sync_state_applied = -1
         self.current_state = None
         self.iterations = iterations
         
@@ -26,8 +24,6 @@ class Generator:
         """
         
         if left is not None and left not in self.grammar_system.instruments[instrument_name].nonterminals:
-            print(left)
-            print(self.grammar_system.instruments[instrument_name].nonterminals)
             raise ValueError(f"Left side {left} not found in nonterminals")
         
         if right is not None:
@@ -83,7 +79,6 @@ class Generator:
         i = 0
         while i < len(current_string):
             # Check if the substring matches the current left non-terminal
-            #print(current_string[i:i + len(left[left_index])])
             substring = ''.join(str(x) for x in current_string[i:i + len(left[left_index]) + 1])
             if i == len(current_string) - 1 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index]):
                 left_index += 1
@@ -321,9 +316,6 @@ class Generator:
         return next_state
     
     def sync_with_terminal_only_rules(self, instrument_name, rule_index):
-        print(self.grammar_system.instruments[instrument_name].tone_rules)
-        print(rule_index)
-        print(self.grammar_system.instruments[instrument_name].tone_rules[rule_index])
         return self.grammar_system.instruments[instrument_name].tone_rules[rule_index]
     
     def apply_tone_transformation_rules(self, current_string, sorted_tone_rules, instrument_name, steps, multi_string, is_last):
@@ -419,7 +411,6 @@ class Generator:
                 self.finished = True
                 break
             # Get the index of the applied rule in the instrument.structure_rules
-            self.sync_state_applied = -1
             states = self.grammar_system.states
             rule_index = next(
                     (i for i, f_rule in enumerate(self.grammar_system.instruments[instrument_name].tone_rules) if rule == f_rule),
@@ -429,7 +420,7 @@ class Generator:
             sync_state = [item for item in states if item.get(list(self.grammar_system.instruments.keys())[0]) == (rule_index + self.structure_rule_counts[instrument_name])]
             print(f"Next sync state: {sync_state}")
             break
-        print('idnot')
+
         return multi_string, sync_state
     
     def get_next_instrument(self, current_instrument_name, states):
@@ -478,9 +469,7 @@ class Generator:
         Generates multi-string music representation based on the grammar system.
         """
         multi_string = self.initialize_multi_string()
-
-        states = self.grammar_system.states
-        
+       
         # Get the first instrument name and instrument by itself
         instrument_name = list(self.grammar_system.instruments.keys())[0]
         instrument = self.grammar_system.instruments[instrument_name]
@@ -512,9 +501,7 @@ class Generator:
         self.finished = False
         is_last = False
         i = 0
-        rule_index = 0
-        #instrument_name = self.first_instrument
-        #instrument = self.grammar_system.instruments[instrument_name]
+
         while i < self.iterations:
             print("IAM NOT HERE")
             instrument_name = self.first_instrument
@@ -537,7 +524,7 @@ class Generator:
                 # For other instruments, proceed with the normal sorted tone rules
                 multi_string, sync_state = self.apply_tone_transformation_rules(
                     current_string,
-                    sorted_tone_rules if self.sync_state_applied is -1 else [instrument.tone_rules[rule_index - len(instrument.structure_rules)]],
+                    sorted_tone_rules,
                     instrument_name,
                     steps,
                     multi_string,
