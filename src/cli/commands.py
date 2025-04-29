@@ -8,7 +8,9 @@ class Commands:
             if len(args) < 1:
                 print("Error: Missing grammar file argument for 'generate' command.")
                 return
-            self.generate_music(args[0])  # Pass the grammar file
+            # Check if the number of iterations is provided, otherwise use a default value
+            iterations = int(args[1]) if len(args) > 1 else 0
+            self.generate_music(args[0], iterations)  # Pass the grammar file
         elif command_name == "list":
             self.list_commands()
         else:
@@ -19,7 +21,7 @@ class Commands:
         print("  generate - Generate MIDI music from grammar")
         print("  list - List available commands")
 
-    def generate_music(self, grammar_file):
+    def generate_music(self, grammar_file, iterations=0):
         # Parse the grammar file
         parser = Parser()
         grammar_system = parser.parse_grammar(grammar_file)
@@ -32,7 +34,7 @@ class Commands:
         #parser.print_grammar_system(grammar_system)
         
         # Generate music
-        generator = Generator(grammar_system, iterations=10)
+        generator = Generator(grammar_system, iterations=iterations)
         multi_string = generator.generate_music()
 
         # Print the generated multi-string
