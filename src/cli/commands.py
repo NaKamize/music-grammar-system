@@ -9,7 +9,7 @@ class Commands:
                 print("Error: Missing grammar file argument for 'generate' command.")
                 return
             # Check if the number of iterations is provided, otherwise use a default value
-            iterations = int(args[1]) if len(args) > 1 else 0
+            iterations = int(args[1]) if len(args) > 1 else 1
             self.generate_music(args[0], iterations)  # Pass the grammar file
         elif command_name == "list":
             self.list_commands()

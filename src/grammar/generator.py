@@ -352,8 +352,6 @@ class Generator:
             if is_sync:
                 # Apply the synchronization rule directly
                 print(f"Applying sync rule for {instrument_name}")
-
-                self.sync_with_terminal_only_rules(instrument_name, rule_index)
                 rule = sorted_tone_rules[rule_index] if not is_last else self.sync_with_terminal_only_rules(instrument_name, rule_index)
                 left = rule["left"]
                 right = rule["right"]
@@ -463,6 +461,52 @@ class Generator:
                         return True
             
         return False
+    
+    def expand_nonterminals_in_rules(self, multi_string):
+        skip_next = False
+        print("There are nonterminals left to be rewritten.")
+        for instrument_name, instrument in self.grammar_system.instruments.items():
+            for note_index, note in enumerate(multi_string[instrument_name]["final_string"][0]):
+                print(note)
+                #skip_next = False  # Flag to skip newly created objects
+                if skip_next:
+                    skip_next = False
+                    continue
+
+                for item in note:
+                    if isinstance(item, str):
+                        print(f"Item: {item}")
+                        
+                        # Find the index of the string item
+                        index = note.index(item)
+                        
+                        # Split the note list into two parts
+                        before_split = note[:index]
+                        after_split = note[index + 1:]
+                        
+                        print(f"Before split: {before_split}, After split: {after_split}")
+                        
+                        # Replace the original note in the multi_string with the split parts
+                        final_string = multi_string[instrument_name]["final_string"][0]
+                        note_index = final_string.index(note)  # Find the index of the original note in the final string
+                        
+                        # Build the new list to replace the original note
+                        new_parts = []
+                        if before_split:  # Only add if before_split is not empty
+                            new_parts.append(before_split)
+                        new_parts.append(item)  # Add the string item as is
+                        if after_split:  # Only add if after_split is not empty
+                            new_parts.append(after_split)
+                        print(f"New parts: {new_parts}")
+                        # Replace the original note with the flattened parts
+                        final_string[note_index:note_index + 1] = new_parts
+                        
+                        print(f"Updated multi_string for {instrument_name}: {multi_string[instrument_name]['final_string']}")
+                        
+                        # Skip the newly created objects in the next iteration
+                        skip_next = True
+                        break
+        return multi_string
 
     def generate_music(self):
         """
@@ -503,7 +547,6 @@ class Generator:
         i = 0
 
         while i < self.iterations:
-            print("IAM NOT HERE")
             instrument_name = self.first_instrument
             instrument = self.grammar_system.instruments[instrument_name]
             # Apply tone rules to generate tones
@@ -539,49 +582,7 @@ class Generator:
             if self.check_for_remaining_nonterminals(multi_string):
                 i += 1
                 self.finished = False
-                skip_next = False
-                print("There are nonterminals left to be rewritten.")
-                for instrument_name, instrument in self.grammar_system.instruments.items():
-                    for note_index, note in enumerate(multi_string[instrument_name]["final_string"][0]):
-                        print(note)
-                        #skip_next = False  # Flag to skip newly created objects
-                        if skip_next:
-                            skip_next = False
-                            continue
-
-                        for item in note:
-                            if isinstance(item, str):
-                                print(f"Item: {item}")
-                                
-                                # Find the index of the string item
-                                index = note.index(item)
-                                
-                                # Split the note list into two parts
-                                before_split = note[:index]
-                                after_split = note[index + 1:]
-                                
-                                print(f"Before split: {before_split}, After split: {after_split}")
-                                
-                                # Replace the original note in the multi_string with the split parts
-                                final_string = multi_string[instrument_name]["final_string"][0]
-                                note_index = final_string.index(note)  # Find the index of the original note in the final string
-                                
-                                # Build the new list to replace the original note
-                                new_parts = []
-                                if before_split:  # Only add if before_split is not empty
-                                    new_parts.append(before_split)
-                                new_parts.append(item)  # Add the string item as is
-                                if after_split:  # Only add if after_split is not empty
-                                    new_parts.append(after_split)
-                                print(f"New parts: {new_parts}")
-                                # Replace the original note with the flattened parts
-                                final_string[note_index:note_index + 1] = new_parts
-                                
-                                print(f"Updated multi_string for {instrument_name}: {multi_string[instrument_name]['final_string']}")
-                                
-                                # Skip the newly created objects in the next iteration
-                                skip_next = True
-                                break
+                multi_string = self.expand_nonterminals_in_rules(multi_string)
             else:
                 print("All nonterminals have been rewritten.")
                 break
