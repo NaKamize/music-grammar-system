@@ -1,5 +1,6 @@
 import random
 from .tone_operations import ToneOperator 
+from utils.grammar_utils import get_tone_nonterminals
 
 class Generator:
     def __init__(self, grammar_system, iterations):
@@ -16,6 +17,8 @@ class Generator:
         self.first_instrument = list(self.grammar_system.instruments.keys())[0]
         self.current_state = None
         self.iterations = iterations
+        self.prev_structure_rule = None
+        self.rep_count = 0
         
     def terminal_nonterminal_check(self, left = None, right = None, instrument_name = None):
         """
@@ -80,19 +83,10 @@ class Generator:
         while i < len(current_string):
             # Check if the substring matches the current left non-terminal
             substring = ''.join(str(x) for x in current_string[i:i + len(left[left_index]) + 1])
-            if i == len(current_string) - 1 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index]):
-                left_index += 1
-                i += len(left[left_index - 1])  # Skip the length of the matched non-terminal
-                print(f"Matched {left[left_index - 1]} at position {i}")
-                if left_index == len(left):
-                    return True
-            elif i == len(current_string) - 2 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index]):
-                left_index += 1
-                i += len(left[left_index - 1])  # Skip the length of the matched non-terminal
-                print(f"Matched {left[left_index - 1]} at position {i}")
-                if left_index == len(left):
-                    return True
-            elif list(current_string[i:i + len(left[left_index])]) == list(left[left_index]) and substring not in self.grammar_system.instruments[instrument_name].nonterminals:
+            is_last_char = i == len(current_string) - 1 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index])
+            is_second_last_char = i == len(current_string) - 2 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index])
+            is_not_nonterminal = list(current_string[i:i + len(left[left_index])]) == list(left[left_index]) and substring not in self.grammar_system.instruments[instrument_name].nonterminals
+            if is_last_char or is_second_last_char or is_not_nonterminal:
                 left_index += 1
                 i += len(left[left_index - 1])  # Skip the length of the matched non-terminal
                 print(f"Matched {left[left_index - 1]} at position {i}")
@@ -154,11 +148,11 @@ class Generator:
         j = 0
         while i < len(current_string):
             substring = ''.join(str(x) for x in current_string[i:i + len(left[left_index]) + 1])
-            if (
-                (i == len(current_string) - 1 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index]))
-                or (i == len(current_string) - 2 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index]))
-                or (list(current_string[i:i + len(left[left_index])]) == list(left[left_index]) and substring not in self.grammar_system.instruments[instrument_name].nonterminals)
-            ):
+            is_last_char = i == len(current_string) - 1 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index])
+            is_second_last_char = i == len(current_string) - 2 and list(current_string[i:i + len(left[left_index])]) == list(left[left_index])
+            is_not_nonterminal = list(current_string[i:i + len(left[left_index])]) == list(left[left_index]) and substring not in self.grammar_system.instruments[instrument_name].nonterminals
+            
+            if (is_last_char or is_second_last_char or is_not_nonterminal):
                 if len(left[left_index]) > 1:
                     # Remove following characters
                     new_string[j:j + len(left[left_index])] = [' '] * (len(left[left_index]) - 1)
@@ -248,14 +242,27 @@ class Generator:
         # Apply structure rules iteratively
         while True:
             rule_applied = False
-            for rule in sorted_structure_rules:
+            is_sync = False
+
+            # Determine if synchronization is required
+            if instrument_name != self.first_instrument:
+                print(f"Instrument name: {instrument_name}")
+                print(f"First instrument: {self.current_state}")
+                rule_index = self.current_state[0][instrument_name]
+                print(f"Rule index: {rule_index}")
+                is_sync = True
+
+            if is_sync:
+                # Apply the synchronization rule directly
+                print(f"Applying sync rule for {instrument_name}")
+                rule = sorted_structure_rules[rule_index]
                 left = rule["left"]
                 right = rule["right"]
                 print(f"Current string: {current_string}")
                 print(f"Trying to apply transform rule: {left} -> {right}")
 
                 # Check if the left side of the rule matches the current string
-                match_index = current_string.find(''.join(left))                    
+                match_index = current_string.find(''.join(left))            
                 if match_index != -1:
                     # Replace the left side with the right side at the specific position
                     new_string = (
@@ -265,8 +272,8 @@ class Generator:
                     )
                     steps.append(f"Applied structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                     current_string = new_string
+                    print(current_string)
                     rule_applied = True
-                    break
                 else:
                     # Check if the left side matches in a scattered manner
                     if self.is_scattered_match(current_string, left):
@@ -274,9 +281,52 @@ class Generator:
                         steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         current_string = new_string
                         rule_applied = True
-                        break
+                        print(current_string)
                     else:
                         print("No match found for scattered structure rule")
+            else:
+                for rule in sorted_structure_rules:
+                    left = rule["left"]
+                    right = rule["right"]
+                    print(f"Current string: {current_string}")
+                    print(f"Trying to apply transform rule: {left} -> {right}")
+                    # Check here if the last rule is equal to this one then skip it
+                    print(f"Prev-strucutre: {self.prev_structure_rule}")
+                    if self.prev_structure_rule == rule:
+                        print("THIS RULE IS REPEATED")
+                        self.rep_count += 1
+                        print(f"Repeated count: {self.rep_count}")
+                        if self.rep_count > self.iterations and rule != sorted_structure_rules[-1]:
+                            print("Skipping this rule")
+                            self.rep_count = 0
+                            continue
+
+                    # Check if the left side of the rule matches the current string
+                    match_index = current_string.find(''.join(left))                    
+                    if match_index != -1:
+                        # Replace the left side with the right side at the specific position
+                        new_string = (
+                            current_string[:match_index] +
+                            ''.join([str(note) for note in right]) +
+                            current_string[match_index + len(''.join(left)):]
+                        )
+                        steps.append(f"Applied structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                        current_string = new_string
+                        print(current_string)
+                        rule_applied = True
+                        self.prev_structure_rule = rule
+                        break
+                    else:
+                        # Check if the left side matches in a scattered manner
+                        if self.is_scattered_match(current_string, left):
+                            new_string = self.replace_scattered_strucutre_symbols(current_string, left, right)
+                            steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                            current_string = new_string
+                            rule_applied = True
+                            self.prev_structure_rule = rule
+                            break
+                        else:
+                            print("No match found for scattered structure rule")
             # Update the final string in multi_string
             multi_string[instrument_name]["final_string"][0] = current_string
             # Break the loop if no rule was applied
@@ -291,10 +341,11 @@ class Generator:
             )
             
             states = self.grammar_system.states
-            sync_state = [item for item in states if item.get('Piano_treble') == rule_index]
+            sync_state = [item for item in states if item.get(list(self.grammar_system.instruments.keys())[0]) == rule_index]
+            print(f"Next sync state: {sync_state}")
             break
-        
-        return multi_string, current_string, steps, sync_state
+
+        return multi_string, sync_state
     
     def get_next_sync_state(self, states, instrument_name, rule_index):
         """
@@ -462,6 +513,28 @@ class Generator:
             
         return False
     
+    def check_for_remaining_nonterminals(self, multi_string):
+        for instrument_name, instrument_data in multi_string.items():
+            # Get the nonterminals for the current instrument
+            nonterminals = set(
+                tuple(nt) if isinstance(nt, list) else nt
+                for nt in self.grammar_system.instruments[instrument_name].nonterminals
+            )
+            
+            # Get the final string for the current instrument
+            final_string = instrument_data["final_string"][0]
+            
+            # Check if any symbol in the final string is a nonterminal
+            for symbol in final_string:
+                # Convert symbol to a tuple if it's a list
+                symbol_to_check = tuple(symbol) if isinstance(symbol, list) else symbol
+                for sym in symbol_to_check:
+                    if isinstance(sym, str) and sym in nonterminals:
+                        print(f"Nonterminal '{sym}' found in instrument '{instrument_name}'")
+                        return True
+            
+        return False
+    
     def expand_nonterminals_in_rules(self, multi_string):
         skip_next = False
         print("There are nonterminals left to be rewritten.")
@@ -518,29 +591,75 @@ class Generator:
         instrument_name = list(self.grammar_system.instruments.keys())[0]
         instrument = self.grammar_system.instruments[instrument_name]
         self.current_instrument = instrument_name
-        
-        # Loop rules and find rule for current nonterminal
-        while self.finished is False:
-            current_string = multi_string[instrument_name]["final_string"][0]
-            steps = multi_string[instrument_name]["steps"]
+        i = 0
 
-            # Sort structure rules by the length of their left side in descending order
-            sorted_structure_rules = sorted(
-                instrument.structure_rules,
-                key=lambda rule: sum(len(nt) for nt in rule["left"]),
-                reverse=True
-            )
-
-            multi_string, current_string, steps, sync_state = self.apply_structure_transformation_rules(
-                current_string,
-                sorted_structure_rules if self.first_instrument == instrument_name else sorted_structure_rules,
-                instrument_name,
-                steps,
-                multi_string
-            )
-            
-            instrument_name = self.get_next_instrument(instrument_name, sync_state)
+        while i < self.iterations:
+            instrument_name = self.first_instrument
             instrument = self.grammar_system.instruments[instrument_name]
+            
+            # Loop rules and find rule for current nonterminal
+            while self.finished is False:
+                current_string = multi_string[instrument_name]["final_string"][0]
+                steps = multi_string[instrument_name]["steps"]
+
+                sorted_structure_rules = instrument.structure_rules
+                
+                multi_string, sync_state = self.apply_structure_transformation_rules(
+                    current_string,
+                    sorted_structure_rules,
+                    instrument_name,
+                    steps,
+                    multi_string
+                )
+                
+                self.current_state = sync_state
+                instrument_name = self.get_next_instrument(instrument_name, sync_state)
+                instrument = self.grammar_system.instruments[instrument_name]
+                
+            print(f"Multi-string after structure rules: {multi_string}")
+            final_strucutre = 0
+            for instrument_name, instrument_data in multi_string.items():
+                # get the left side nonterminals from tone rules
+                tone_nonterminals = get_tone_nonterminals(self.grammar_system, instrument_name)
+                print(f"Tone nonterminals for {instrument_name}: {tone_nonterminals}")
+                
+                # Get the final string for the current instrument
+                final_string = instrument_data["final_string"][0]
+
+                skip_next = False  # Flag to skip the next symbol
+                for index, symbol in enumerate(final_string):
+                    if skip_next:
+                        skip_next = False  # Reset the flag and skip this iteration
+                        continue
+
+                    # Ensure there is a next symbol to form a pair
+                    if index < len(final_string) - 1:
+                        next_symbol = final_string[index + 1]
+                        # Concatenate symbol and next_symbol and check if it's in tone_nonterminals
+                        combined_symbol = symbol + next_symbol
+                        if combined_symbol in tone_nonterminals:
+                            print(f"Combined symbol '{combined_symbol}' is in tone_nonterminals.")
+                            skip_next = True  # Set the flag to skip the next symbol
+                            continue  # Skip further checks for this pair
+
+                    if symbol in tone_nonterminals:
+                        print(f"'{symbol}' is in tone_nonterminals.")
+                    else:
+                        print(f"'{symbol}' is not in tone_nonterminals.")
+                        final_strucutre += 1
+                        break
+                    
+            if final_strucutre == 1:
+                # Thrown an error if there are nonterminals left
+                print("Throwing an error")
+                # Raise an error or handle it as needed
+                raise ValueError("Wrong rule design, it is not being synchronized.")
+            elif final_strucutre == 0:
+                print("All nonterminals have been rewritten.")
+                break
+            else: 
+                i += 1
+                
         
         self.finished = False
         is_last = False

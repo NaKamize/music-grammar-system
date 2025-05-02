@@ -1,4 +1,4 @@
-from music21 import chord, pitch, interval, note
+from music21 import chord
 
 class NeoRiemannian:
     def __init__(self, chord_notes):
