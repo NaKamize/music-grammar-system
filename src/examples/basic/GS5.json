@@ -6,7 +6,7 @@
             "start": "S",
             "structure_rules": [
                 { "left": ["S"], "right": ["ABAB"] },
-                { "left": ["A", "A"], "right": ["MN", "MN"] },
+                { "left": ["A", "A"], "right": ["MMN", "MMN"] },
                 { "left": ["B", "B"], "right": ["M1N1", "M1N1"] }
             ],
             "tone_rules": [
@@ -82,7 +82,7 @@
             "start": "S1",
             "structure_rules": [
                 { "left": ["S1"], "right": ["ABAB"] },
-                { "left": ["A", "A"], "right": ["PL", "PL"] },
+                { "left": ["A", "A"], "right": ["PPL", "PPL"] },
                 { "left": ["B", "B"], "right": ["PL", "PL"] }
             ],
             "tone_rules": [
