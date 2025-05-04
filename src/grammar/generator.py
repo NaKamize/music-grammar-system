@@ -162,7 +162,7 @@ class Generator:
                     new_string[j] = right[left_index]
                 else:
                     # Replace the matched substring with the corresponding symbol from 'right'
-                    print(f"Replacing {new_string[j]} with {right[left_index]}")
+                    # Replacing {new_string[j]} with {right[left_index]}
                     for rule in right[left_index]:
                         apply_counterpoint_if_needed(rule)
                     # Check if the left side is in the nonterminals; if not, throw an error
@@ -176,7 +176,7 @@ class Generator:
             else:
                 i += 1
                 j += 1
-        print(f"New string: {new_string}")
+
         return new_string
     
     def replace_scattered_strucutre_symbols(self, current_string, left, right):
@@ -222,23 +222,6 @@ class Generator:
         return multi_string
     
     def apply_structure_transformation_rules(self, current_string, structure_rules, instrument_name, steps, multi_string):
-        """
-        Applies structure transformation rules to the current string iteratively.
-
-        This method processes a list of structure rules, replacing the left-hand side of each rule
-        with its corresponding right-hand side in the current string. It supports both direct
-        and scattered matches.
-
-        Args:
-            current_string (list): The current string representation of structures.
-            sorted_structure_rules (list): A list of structure rules sorted by the length of their left-hand side.
-            instrument_name (str): The name of the instrument being processed.
-            steps (list): A list to record the steps of rule application.
-            multi_string (dict): A dictionary containing the multi-string representation for all instruments.
-
-        Returns:
-            dict: The updated multi_string with the transformed structures.
-        """
         # Apply structure rules iteratively
         while True:
             rule_applied = False
@@ -246,10 +229,7 @@ class Generator:
 
             # Determine if synchronization is required
             if instrument_name != self.first_instrument:
-                print(f"Instrument name: {instrument_name}")
-                print(f"First instrument: {self.current_state}")
                 rule_index = self.current_state[0][instrument_name]
-                print(f"Rule index: {rule_index}")
                 is_sync = True
 
             if is_sync:
@@ -272,7 +252,6 @@ class Generator:
                     )
                     steps.append(f"Applied structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                     current_string = new_string
-                    print(current_string)
                     rule_applied = True
                 else:
                     # Check if the left side matches in a scattered manner
@@ -281,7 +260,6 @@ class Generator:
                         steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         current_string = new_string
                         rule_applied = True
-                        print(current_string)
                     else:
                         print("No match found for scattered structure rule")
             else:
@@ -291,13 +269,12 @@ class Generator:
                     print(f"Current string: {current_string}")
                     print(f"Trying to apply transform rule: {left} -> {right}")
                     # Check here if the last rule is equal to this one then skip it
-                    print(f"Prev-strucutre: {self.prev_structure_rule}")
                     if self.prev_structure_rule == rule:
-                        print("THIS RULE IS REPEATED")
+                        # Check if the rule is repeated
                         self.rep_count += 1
                         print(f"Repeated count: {self.rep_count}")
                         if self.rep_count > self.iterations and rule != structure_rules[-1]:
-                            print("Skipping this rule")
+                            # Rule is being skipped
                             self.rep_count = 0
                             continue
 
@@ -354,17 +331,6 @@ class Generator:
         return multi_string, sync_state
     
     def get_next_sync_state(self, states, instrument_name, rule_index):
-        """
-        Retrieves the next sync state for the given instrument and rule index.
-
-        Args:
-            states (list): A list of sync states.
-            instrument_name (str): The name of the instrument.
-            rule_index (int): The current rule index.
-
-        Returns:
-            dict: The next sync state for the instrument, or None if not found.
-        """
         # Find the next sync state where the rule index matches
         next_state = next(
             (state for state in states if state.get(instrument_name) == rule_index),
@@ -376,34 +342,13 @@ class Generator:
         return self.grammar_system.instruments[instrument_name].tone_rules[rule_index]
     
     def apply_tone_transformation_rules(self, current_string, tone_rules, instrument_name, steps, multi_string, is_last):
-        """
-        Applies tone transformation rules to the current string iteratively.
-
-        This method processes a list of tone rules, replacing the left-hand side of each rule
-        with its corresponding right-hand side in the current string. It supports both direct
-        and scattered matches.
-
-        Args:
-            current_string (list): The current string representation of tones.
-            sorted_tone_rules (list): A list of tone rules sorted by the length of their left-hand side.
-            instrument_name (str): The name of the instrument being processed.
-            steps (list): A list to record the steps of rule application.
-            multi_string (dict): A dictionary containing the multi-string representation for all instruments.
-
-        Returns:
-            dict: The updated multi_string with the transformed tones.
-        """
-
         while True:
             rule_applied = False
             is_sync = False
 
             # Determine if synchronization is required
             if instrument_name != self.first_instrument:
-                print(f"Instrument name: {instrument_name}")
-                print(f"First instrument: {self.current_state}")
                 rule_index = self.current_state[0][instrument_name] - len(self.grammar_system.instruments[instrument_name].structure_rules)
-                print(f"Rule index: {rule_index}")
                 is_sync = True
 
             if is_sync:
@@ -442,22 +387,22 @@ class Generator:
                     # Check if the left side of the rule matches the current string
                     match_index = self.find_sublist(current_string, left)
                     if match_index != -1:
-                        # Replace the left side with the right side at the specific position
-                        steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         applicable_count = applicable_rules_count(tone_rules, left)
                         if applicable_count > 1:
                             left, right, rule = select_random_applicable_rule(tone_rules, left)
+                        # Replace the left side with the right side at the specific position
+                        steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                         current_string[match_index] = right[0]
                         rule_applied = True
                         break
                     else:
                         # Check if the left side matches in a scattered manner
                         if self.is_scattered_match_list(current_string, left, instrument_name):
-                            # Convert back to string
-                            steps.append(f"Applied scattered tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                             applicable_count = applicable_rules_count(tone_rules, left)
                             if applicable_count > 1:
                                 left, right, rule = select_random_applicable_rule(tone_rules, left)
+                            # Convert back to string
+                            steps.append(f"Applied scattered tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                             current_string = self.replace_scattered_tone_rule(current_string, left, right, instrument_name)
                             rule_applied = True
                             break
@@ -479,7 +424,6 @@ class Generator:
                 )
 
             sync_state = [item for item in states if item.get(list(self.grammar_system.instruments.keys())[0]) == (rule_index + self.structure_rule_counts[instrument_name])]
-            print(f"Next sync state: {sync_state}")
             break
 
         return multi_string, sync_state
@@ -520,37 +464,15 @@ class Generator:
                 symbol_to_check = tuple(symbol) if isinstance(symbol, list) else symbol
                 for sym in symbol_to_check:
                     if isinstance(sym, str) and sym in nonterminals:
-                        print(f"Nonterminal '{sym}' found in instrument '{instrument_name}'")
+                        # Nonterminal sym was found in instrument 
                         return True
             
         return False
     
-    def check_for_remaining_nonterminals(self, multi_string):
-        for instrument_name, instrument_data in multi_string.items():
-            # Get the nonterminals for the current instrument
-            nonterminals = set(
-                tuple(nt) if isinstance(nt, list) else nt
-                for nt in self.grammar_system.instruments[instrument_name].nonterminals
-            )
-            
-            # Get the final string for the current instrument
-            final_string = instrument_data["final_string"][0]
-            
-            # Check if any symbol in the final string is a nonterminal
-            for symbol in final_string:
-                # Convert symbol to a tuple if it's a list
-                symbol_to_check = tuple(symbol) if isinstance(symbol, list) else symbol
-                for sym in symbol_to_check:
-                    if isinstance(sym, str) and sym in nonterminals:
-                        print(f"Nonterminal '{sym}' found in instrument '{instrument_name}'")
-                        return True
-            
-        return False
     
     def expand_nonterminals_in_rules(self, multi_string):
         skip_next = False
-        print("There are nonterminals left to be rewritten.")
-        for instrument_name, instrument in self.grammar_system.instruments.items():
+        for instrument_name, _ in self.grammar_system.instruments.items():
             for note_index, note in enumerate(multi_string[instrument_name]["final_string"][0]):
                 print(note)
                 if skip_next:
