@@ -3,9 +3,9 @@ from .tone_operations import ToneOperator
 from utils.grammar_utils import get_tone_nonterminals, applicable_rules_count, select_random_applicable_rule
 
 class Generator:
-    def __init__(self, grammar_system, iterations):
+    def __init__(self, grammar_system, repetitions):
         self.grammar_system = grammar_system
-        self.iterations = iterations
+        self.repetitions = repetitions
         
         # Initialize a dictionary to keep count of structure rules for each instrument
         self.structure_rule_counts = {
@@ -16,7 +16,6 @@ class Generator:
         self.finished = False
         self.first_instrument = list(self.grammar_system.instruments.keys())[0]
         self.current_state = None
-        self.iterations = iterations
         self.prev_structure_rule = None
         self.rep_count = 0
         
@@ -285,7 +284,7 @@ class Generator:
                         # Check if the rule is repeated
                         self.rep_count += 1
                         print(f"Repeated count: {self.rep_count}")
-                        if self.rep_count > self.iterations and rule != structure_rules[-1]:
+                        if self.rep_count > self.repetitions and rule != structure_rules[-1]:
                             # Rule is being skipped
                             self.rep_count = 0
                             continue
@@ -516,7 +515,7 @@ class Generator:
         self.current_instrument = instrument_name
         i = 0
 
-        while i < self.iterations:
+        while i < self.repetitions:
             instrument_name = self.first_instrument
             instrument = self.grammar_system.instruments[instrument_name]
             
@@ -555,7 +554,7 @@ class Generator:
         is_last = False
         i = 0
 
-        while i < self.iterations:
+        while i < self.repetitions:
             instrument_name = self.first_instrument
             instrument = self.grammar_system.instruments[instrument_name]
             
@@ -566,7 +565,7 @@ class Generator:
 
                 sorted_tone_rules = instrument.tone_rules
                 # If it's the last cycle, filter out rules with non-terminals on the right-hand side
-                if i == self.iterations - 1:
+                if i == self.repetitions - 1:
                     sorted_tone_rules = [rule for rule in sorted_tone_rules if all(
                         not isinstance(symbol, str)
                         for symbol in rule["right"][0]
