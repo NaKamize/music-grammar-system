@@ -536,8 +536,9 @@ class Generator:
                     multi_string
                 )
                 
-                self.current_state = sync_state
-                instrument_name = self.get_next_instrument(instrument_name, sync_state)
+                if instrument_name == self.first_instrument:
+                    self.current_state = sync_state
+                instrument_name = self.get_next_instrument(instrument_name, self.current_state)
                 instrument = self.grammar_system.instruments[instrument_name]
                 
             print(f"Multi-string after structure rules: {multi_string}")
@@ -586,7 +587,6 @@ class Generator:
                 )
                 if instrument_name == self.first_instrument:
                     self.current_state = sync_state
-                print(self.current_state)
                 instrument_name = self.get_next_instrument(instrument_name, self.current_state)
                 instrument = self.grammar_system.instruments[instrument_name]
 
