@@ -368,7 +368,9 @@ class Generator:
             if is_sync:
                 # Apply the synchronization rule directly
                 print(f"Applying sync rule for {instrument_name}")
+                print(is_last)
                 rule = tone_rules[rule_index] if not is_last else self.sync_with_terminal_only_rules(instrument_name, rule_index)
+                print(rule)
                 steps, current_string, rule_applied, _ = self.handle_tone_rule_application(rule, steps, current_string, instrument_name, is_sync, tone_rules)
             else:
                 # Apply tone rules iteratively
@@ -582,9 +584,10 @@ class Generator:
                     multi_string,
                     is_last
                 )
-                self.current_state = sync_state
-
-                instrument_name = self.get_next_instrument(instrument_name, sync_state)
+                if instrument_name == self.first_instrument:
+                    self.current_state = sync_state
+                print(self.current_state)
+                instrument_name = self.get_next_instrument(instrument_name, self.current_state)
                 instrument = self.grammar_system.instruments[instrument_name]
 
             # Check the final strings if there are non-terminal left
