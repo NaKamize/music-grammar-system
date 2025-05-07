@@ -1,6 +1,14 @@
 from grammar.parser import Parser
 from grammar.generator import Generator
 from midi.midi_writer import MidiWriter
+import json
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if hasattr(obj, "to_dict"):
+            return obj.to_dict()  # Use the `to_dict` method if available
+        return super().default(obj)  # Fallback to the default behavior
 
 class Commands:
     def execute_command(self, command_name, *args):
@@ -13,6 +21,16 @@ class Commands:
             self.generate_music(args[0], repetitions)  
         elif command_name == "list":
             self.list_commands()
+        elif command_name == "instruments":
+            instrument_map = {
+            "Violin": 40,
+            "Cello": 42,
+            "Flute": 73,
+            "Piano": 0,
+            }
+            print("Available instruments:")
+            for instrument, program_number in instrument_map.items():
+                print(f"  {instrument}: Program Number {program_number}")
         else:
             print(f"Unknown command: {command_name}")
 
@@ -38,10 +56,14 @@ class Commands:
         for instrument_name, result in multi_string.items():
             print(f"Instrument: {instrument_name}")
             print("  Final String:")
-            print(f"    {result['final_string']}")
+            print(json.dumps(result['final_string'], cls=CustomJSONEncoder))
             print("  Steps:")
             for step in result["steps"]:
-                print(f"    {step}")
+                if isinstance(step, dict):
+                    print(f"    Applied tone rule {step['left']} -> {step['right']}")
+                else:
+                    print(f"    {step}")
+            #print(result["steps"])
         
         # Write the multi_string to a MIDI file
         midi_writer = MidiWriter(multi_string)

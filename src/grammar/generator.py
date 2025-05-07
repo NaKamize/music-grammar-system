@@ -1,4 +1,3 @@
-import random
 from .tone_operations import ToneOperator 
 from utils.grammar_utils import get_tone_nonterminals, applicable_rules_count, select_random_applicable_rule
 
@@ -249,7 +248,7 @@ class Generator:
                 if applicable_count > 1 and not sync:
                     left, right, rule = select_random_applicable_rule(tone_rules, left)
                 new_string = self.replace_scattered_strucutre_symbols(current_string, left, right)
-                steps.append(f"Applied scattered structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                steps.append(f"Applied structure rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
                 current_string = new_string
                 rule_applied = True
             else:
@@ -324,6 +323,17 @@ class Generator:
     def sync_with_terminal_only_rules(self, instrument_name, rule_index):
         return self.grammar_system.instruments[instrument_name].tone_rules[rule_index]
     
+    def convert_to_dict(self, obj):
+        if isinstance(obj, list):
+            # Recursively convert each item in the list
+            return [self.convert_to_dict(item) for item in obj]
+        elif hasattr(obj, 'to_dict'):
+            # Convert the object to a dictionary if it has a `to_dict` method
+            return obj.to_dict()
+        else:
+            # Fallback to string representation for other types
+            return str(obj)
+    
     def handle_tone_rule_application(self, rule, steps, current_string, instrument_name, sync, tone_rules):
         left = rule["left"]
         right = rule["right"]
@@ -337,7 +347,7 @@ class Generator:
             if applicable_count > 1 and not sync:
                 left, right, rule = select_random_applicable_rule(tone_rules, left)
             # Replace the left side with the right side at the specific position
-            steps.append(f"Applied tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+            steps.append({"left": ''.join(left), "right": self.convert_to_dict(right)})
             current_string[match_index] = right[0]
             rule_applied = True
         else:
@@ -347,7 +357,7 @@ class Generator:
                 if applicable_count > 1 and not sync:
                     left, right, rule = select_random_applicable_rule(tone_rules, left)
                 # Convert back to string
-                steps.append(f"Applied scattered tone rule: {''.join(left)} -> {''.join([str(note) for note in right])}")
+                steps.append({"left": ''.join(left), "right": self.convert_to_dict(right)})
                 current_string = self.replace_scattered_tone_rule(current_string, left, right, instrument_name)
                 rule_applied = True
             else:

@@ -28,6 +28,20 @@ class ToneRule:
         
     def set_tone_name(self, tone_name):
         self.tone = tone_name
+        
+    def to_dict(self):
+        """
+        Converts the ToneRule object into a dictionary for JSON serialization.
+        """
+        return {
+            "tone": self.tone,
+            "length": self.length,
+            "octave": self.octave,
+            "dynamics": self.dynamics,
+            "variation": self.variation,
+            "chord": self.chord,
+            "operations": self.operations
+        }
 
 
 class Parser:
