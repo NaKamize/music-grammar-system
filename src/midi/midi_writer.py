@@ -12,7 +12,15 @@ class MidiWriter:
             "Cello": 42,
             "Flute": 73,
             "Piano": 0,
+            "Guitar": 24,
+            "Trumpet": 56,
+            "Saxophone": 65,
+            "Clarinet": 71,
+            "Trombone": 57,
+            "Accordion": 21,
+            "Bass": 32
         }
+        
         self.key_signature = "C"  
         
     def normalize_instrument_name(self, name):

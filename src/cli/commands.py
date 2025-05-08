@@ -27,6 +27,13 @@ class Commands:
             "Cello": 42,
             "Flute": 73,
             "Piano": 0,
+            "Guitar": 24,
+            "Trumpet": 56,
+            "Saxophone": 65,
+            "Clarinet": 71,
+            "Trombone": 57,
+            "Accordion": 21,
+            "Bass": 32
             }
             print("Available instruments:")
             for instrument, program_number in instrument_map.items():
@@ -36,8 +43,10 @@ class Commands:
 
     def list_commands(self):
         print("Available commands:")
-        print("  generate <number>- Generate MIDI music from grammar and specify the number of possible repetitions")
-        print("  list - List available commands")
+        print("  generate <number>- <outfile> Generate MIDI music from grammar and specify the number of possible repetitions")
+        print("                               and the name of the output file.")
+        print("  list - List available commands.")
+        print("  instruments - List available instruments and their program numbers.")
 
     def generate_music(self, grammar_file, repetitions=1):
         # Parse the grammar file
