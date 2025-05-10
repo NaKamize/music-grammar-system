@@ -18,7 +18,8 @@ class Commands:
                 return
             
             repetitions = int(args[1]) if len(args) > 1 else 1
-            self.generate_music(args[0], repetitions)  
+            outfile = args[2] if len(args) > 2 else "output.mid"
+            self.generate_music(args[0], outfile, repetitions)  
         elif command_name == "list":
             self.list_commands()
         elif command_name == "instruments":
@@ -48,7 +49,7 @@ class Commands:
         print("  list - List available commands.")
         print("  instruments - List available instruments and their program numbers.")
 
-    def generate_music(self, grammar_file, repetitions=1):
+    def generate_music(self, grammar_file, outfile, repetitions=1):
         # Parse the grammar file
         parser = Parser()
         grammar_system = parser.parse_grammar(grammar_file)
@@ -72,8 +73,7 @@ class Commands:
                     print(f"    Applied tone rule {step['left']} -> {step['right']}")
                 else:
                     print(f"    {step}")
-            #print(result["steps"])
         
         # Write the multi_string to a MIDI file
         midi_writer = MidiWriter(multi_string)
-        midi_writer.write_to_midi("output.mid")
+        midi_writer.write_to_midi(outfile)

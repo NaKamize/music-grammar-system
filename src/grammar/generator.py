@@ -321,6 +321,10 @@ class Generator:
         return next_state
     
     def sync_with_terminal_only_rules(self, instrument_name, rule_index):
+        #if rule_index == len(self.grammar_system.instruments[instrument_name].tone_rules):
+        #    rule_index -= rule_index-1
+        print(rule_index)
+        print(self.grammar_system.instruments[instrument_name].tone_rules)
         return self.grammar_system.instruments[instrument_name].tone_rules[rule_index]
     
     def convert_to_dict(self, obj):

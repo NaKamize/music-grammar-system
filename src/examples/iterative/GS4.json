@@ -1,0 +1,660 @@
+{
+    "instruments": {
+        "Piano_treble": {
+            "nonterminals": ["S", "P", "X", "M", "O", "V1", "V2", "M1", "M2", "V3", "V4", "N", "N1"],
+            "terminals": ["C", "D", "E", "F", "G", "A", "B", ["D", "F", "A"], ["C", "E", "G"]],
+            "start": "S",
+            "structure_rules": [
+                { "left": ["S"], "right": ["OBOX"] },
+                { "left": ["X"], "right": ["OBO"] },
+                { "left": ["O", "O"], "right": ["MMV1V2M1M2V3V4", "MMV1V2M1M2V3V4"] },
+                { "left": ["B"], "right": ["NN1NN1"] }
+            ],
+            "tone_rules": [
+                { "left": ["M", "M"], "right": [
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        "M"
+                    ], 
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        "M"
+                    ]
+                    ] 
+                },
+                { "left": ["M", "M"], "right": [
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ]
+                    ] 
+                },
+                { "left": ["V1", "V1"], "right": [
+                    [
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        "V1"
+                    ], 
+                    [
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        "V1"
+                    ]
+                    ] 
+                },
+                { "left": ["V1", "V1"], "right": [
+                    [
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} }
+                    ]
+                    ] 
+                },
+                { "left": ["V2", "V2"], "right": [
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        "V2"
+                    ], 
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        "V2"
+                    ]
+                    ]
+                },
+                { "left": ["V2", "V2"], "right": [
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} }
+                    ], 
+                    [
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "B", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "A", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} },
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 2} }
+                    ]
+                    ] 
+                },
+                { "left": ["M1", "M1"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        "M1"
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        "M1"
+                    ]
+                    ] 
+                },
+                { "left": ["M1", "M1"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none" }
+                    ]
+                    ] 
+                },
+                { "left": ["M2", "M2"], "right": [
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"},
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"},
+                        "M2"
+                    ], 
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"},
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"},
+                        "M2"
+                    ]
+                    ] 
+                },
+                { "left": ["M2", "M2"], "right": [
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"},
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"},
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": "none"}
+                    ]
+                    ] 
+                },
+                { "left": ["V3", "V3"], "right": [
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 5} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 5} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"transpose": 5} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"transpose": 5} },
+                        "V3"
+                    ], 
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 5} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"transpose": 5} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"transpose": 5} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"transpose": 5} },
+                        "V3"
+                    ]
+                    ] 
+                },
+                { "left": ["V3", "V3"], "right": [
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} }
+                    ]
+                    ] 
+                },
+                { "left": ["V4", "V4"], "right": [
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        "V4"
+                    ], 
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        "V4"
+                    ]
+                    ]
+                },
+                { "left": ["V4", "V4"], "right": [
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} },
+                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "f", "operation": {"counterpoint": true} }
+                    ]
+                    ]
+                },
+                { "left": ["N", "N"], "right": [
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "f", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "f", "operation": "none"}
+                    ]
+                    ] 
+                },
+                { "left": ["N1", "N1"], "right": [
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"},
+                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "f", "operation": "none"}
+                    ]
+                    ] 
+                }
+            ]
+        },
+        "Piano_bass": {
+            "nonterminals": ["S1", "A", "B", "X", "P", "R"],
+            "terminals": [["C", "E", "G"]],
+            "start": "S1",
+            "structure_rules": [
+                { "left": ["S1"], "right": ["ABAX"] },
+                { "left": ["X"], "right": ["ABA"] },
+                { "left": ["A", "A"], "right": ["PRPRPRPR", "PRPRPRPR"] },
+                { "left": ["B"], "right": ["PRPR"] }
+            ],
+            "tone_rules": [
+                { "left": ["P", "P"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        "P"
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        "P"
+                    ]
+                    ] 
+                },
+                { "left": ["P", "P"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} }
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "P"} }
+                    ]
+                    ] 
+                },
+                { "left": ["R", "R"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        "R"
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        "R"
+                    ]
+                    ] 
+                },
+                { "left": ["R", "R"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} }
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 3, "dynamics": "mf", "operation": {"neorieman" : "R"} }
+                    ]
+                    ] 
+                }
+            ]
+        },
+        "Violin": {
+            "nonterminals": ["S", "P", "X", "M", "O", "V1", "V2", "M1", "M2", "V3", "V4", "N", "N1"],
+            "terminals": ["C", "D", "E", "F", "G", "B", ["D", "F", "A"], ["C", "E", "G"]],
+            "start": "S",
+            "structure_rules": [
+                { "left": ["S"], "right": ["OBOX"] },
+                { "left": ["X"], "right": ["OBO"] },
+                { "left": ["O", "O"], "right": ["MMV1V2M1M2V3V4", "MMV1V2M1M2V3V4"] },
+                { "left": ["B"], "right": ["NN1NN1"] }
+            ],
+            "tone_rules": [
+                { "left": ["M", "M"], "right": [
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        "M"
+                    ], 
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        "M"
+                    ]
+                    ] 
+                },
+                { "left": ["M", "M"], "right": [
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ]
+                    ] 
+                },
+                { "left": ["V1", "V1"], "right": [
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V1"
+                    ], 
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V1"
+                    ]
+                    ] 
+                },
+                { "left": ["V1", "V1"], "right": [
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "B", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "G", "length": "half", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ]
+                    ] 
+                },
+                { "left": ["V2", "V2"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V2"
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V2"
+                    ]
+                    ]
+                },
+                { "left": ["V2", "V2"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ]
+                    ] 
+                },
+                { "left": ["M1", "M1"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        "M1"
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        "M1"
+                    ]
+                    ] 
+                },
+                { "left": ["M1", "M1"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" }
+                    ]
+                    ] 
+                },
+                { "left": ["M2", "M2"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        "M2"
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        "M2"
+                    ]
+                    ] 
+                },
+                { "left": ["M2", "M2"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" }
+                    ]
+                    ] 
+                },
+                { "left": ["V3", "V3"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V3"
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V3"
+                    ]
+                    ] 
+                },
+                { "left": ["V3", "V3"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ]
+                    ] 
+                },
+                { "left": ["V4", "V4"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V4"
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        "V4"
+                    ]
+                    ]
+                },
+                { "left": ["V4", "V4"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": {"counterpoint": true} }
+                    ]
+                    ]
+                },
+                { "left": ["N", "N"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" }
+                    ]
+                    ] 
+                },
+                { "left": ["N1", "N1"], "right": [
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"},
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none"}
+                    ], 
+                    [
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" },
+                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "ff", "operation": "none" }
+                    ]
+                    ] 
+                }
+            ]
+        },
+        "Guitar": {
+            "nonterminals": ["S3", "A", "B", "X", "P", "L"],
+            "terminals": [["C", "E", "G"]],
+            "start": "S3",
+            "structure_rules": [
+                { "left": ["S3"], "right": ["ABAX"] },
+                { "left": ["X"], "right": ["ABA"] },
+                { "left": ["A", "A"], "right": ["PLPLPLPL", "PLPLPLPL"] },
+                { "left": ["B"], "right": ["PLPL"] }
+            ],
+            "tone_rules": [
+                { "left": ["P", "P"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        "P"
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        "P"
+                    ]
+                    ] 
+                },
+                { "left": ["P", "P"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} }
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "P"} }
+                    ]
+                    ] 
+                },
+                { "left": ["L", "L"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} },
+                        "L"
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} },
+                        "L"
+                    ]
+                    ] 
+                },
+                { "left": ["L", "L"], "right": [
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} }
+                    ], 
+                    [
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} },
+                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": {"neorieman" : "L"} }
+                    ]
+                    ] 
+                }
+            ]
+        }
+    },
+    "Q": [
+        { "Piano_bass": 0, "Piano_treble": 0, "Violin": 0, "Guitar": 0},
+        { "Piano_bass": 1, "Piano_treble": 1, "Violin": 1, "Guitar": 1},
+        { "Piano_bass": 2, "Piano_treble": 2, "Violin": 2, "Guitar": 2},
+        { "Piano_bass": 3, "Piano_treble": 3, "Violin": 3, "Guitar": 3},
+        { "Piano_bass": 4, "Piano_treble": 4, "Violin": 4, "Guitar": 4},
+        { "Piano_bass": 5, "Piano_treble": 5, "Violin": 5, "Guitar": 5},
+        { "Piano_bass": 6, "Piano_treble": 6, "Violin": 6, "Guitar": 6},
+        { "Piano_bass": 7, "Piano_treble": 7, "Violin": 7, "Guitar": 7},
+        { "Piano_bass": 4, "Piano_treble": 8, "Violin": 8, "Guitar": 4},
+        { "Piano_bass": 5, "Piano_treble": 9, "Violin": 9, "Guitar": 5},
+        { "Piano_bass": 6, "Piano_treble": 10, "Violin": 10, "Guitar": 6},
+        { "Piano_bass": 7, "Piano_treble": 11, "Violin": 11, "Guitar": 7},
+        { "Piano_bass": 4, "Piano_treble": 12, "Violin": 12, "Guitar": 4},
+        { "Piano_bass": 5, "Piano_treble": 13, "Violin": 13, "Guitar": 5},
+        { "Piano_bass": 6, "Piano_treble": 14, "Violin": 14, "Guitar": 6},
+        { "Piano_bass": 7, "Piano_treble": 15, "Violin": 15, "Guitar": 7},
+        { "Piano_bass": 4, "Piano_treble": 16, "Violin": 16, "Guitar": 4},
+        { "Piano_bass": 5, "Piano_treble": 17, "Violin": 17, "Guitar": 5},
+        { "Piano_bass": 7, "Piano_treble": 18, "Violin": 18, "Guitar": 7},
+        { "Piano_bass": 7, "Piano_treble": 19, "Violin": 19, "Guitar": 7}
+    ]
+}

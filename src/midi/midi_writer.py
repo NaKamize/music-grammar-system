@@ -38,8 +38,8 @@ class MidiWriter:
     def handle_chord_with_transformations(self, tone, current_transformed_chord, transformation_sequence, transformation_index):
         if tone.operations != "none":
             op = tone.operations.get('neorieman', None)
-            print(f"Neo-Riemannian operation: {op}")
-            print(f"Chord: {tone.chord}")
+            #print(f"Neo-Riemannian operation: {op}")
+            #print(f"Chord: {tone.chord}")
 
             if op in ["P", "L", "R"]:
                 # If there is a current transformed chord, apply the operation to it
@@ -51,12 +51,14 @@ class MidiWriter:
                     transformer = NeoRiemannian(current_transformed_chord)
 
                     # Dynamically call the method based on the current transformation in the sequence
-                    transformation_function = getattr(transformer, transformation_sequence[transformation_index], None)
+                    transformation_function = getattr(transformer, op, None)
                     if transformation_function:
                         transformed_chord = transformation_function()  # Call the method
-                        print(f"Transformed chord using {transformation_sequence[transformation_index]}: {transformed_chord}")
                         # Update the current transformed chord
-                        current_transformed_chord = [p.name for p in transformed_chord.pitches]
+                        #current_transformed_chord = [p.name for p in transformed_chord.pitches]
+                        # Normalize the pitch names
+                        current_transformed_chord = [NeoRiemannian.normalize_pitch_name(p) for p in transformed_chord.pitches]
+                        print(f"Transformed chord using {op}: {current_transformed_chord}")
 
                         # Move to the next transformation in the sequence
                         transformation_index = (transformation_index + 1) % len(transformation_sequence)
