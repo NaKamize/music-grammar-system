@@ -47,10 +47,10 @@ class NeoRiemannian:
         to their enharmonic equivalents if possible.
         """
         if '--' in p.name:
-            return p.getEnharmonic().name  # Convert double flat to enharmonic equivalent
+            return p.getEnharmonic().name
         elif '##' in p.name:
-            return p.getEnharmonic().name  # Convert double sharp to enharmonic equivalent
-        return p.name  # Return the original name if no conversion is needed
+            return p.getEnharmonic().name
+        return p.name
 
     @staticmethod
     def chord_id(ch):

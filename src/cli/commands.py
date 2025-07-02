@@ -7,14 +7,14 @@ import json
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, "to_dict"):
-            return obj.to_dict()  # Use the `to_dict` method if available
-        return super().default(obj)  # Fallback to the default behavior
+            return obj.to_dict()
+        return super().default(obj) 
 
 class Commands:
     def execute_command(self, command_name, *args):
         if command_name == "generate":
             if len(args) < 1:
-                print("Error: Missing grammar file argument for 'generate' command.")
+                print("Error: Missing grammar file argument for generate command.")
                 return
             
             repetitions = int(args[1]) if len(args) > 1 else 1
@@ -44,7 +44,7 @@ class Commands:
 
     def list_commands(self):
         print("Available commands:")
-        print("  generate <number>- <outfile> Generate MIDI music from grammar and specify the number of possible repetitions")
+        print("  generate <infile> <number> <outfile> Generate MIDI music from grammar and specify the number of possible repetitions")
         print("                               and the name of the output file.")
         print("  list - List available commands.")
         print("  instruments - List available instruments and their program numbers.")

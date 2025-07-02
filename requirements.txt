@@ -1,4 +1,2 @@
 mido
-pretty_midi
-argparse
-pytest
+music21

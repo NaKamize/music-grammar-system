@@ -1,0 +1,10 @@
+#!/bin/sh
+'''exec' "/media/nakamize/3f1289c9-e42c-4bb7-bbf2-1c62a97abc06/1- Diplomovka/music-grammar-system/music-env/bin/python3" "$0" "$@"
+' '''
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())

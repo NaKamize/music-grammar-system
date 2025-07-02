@@ -63,7 +63,6 @@ class Parser:
                 operations=tone.get("operation")
             )
         elif isinstance(tone, str):
-            # Parse as a nonterminal
             return tone  # Return the nonterminal as-is
         else:
             # Handle invalid cases

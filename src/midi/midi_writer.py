@@ -1,6 +1,5 @@
 from mido import Message, MidiFile, MidiTrack, MetaMessage
 from utils.neo_riemann import NeoRiemannian
-from music21 import chord
 
 import re
 
@@ -24,8 +23,8 @@ class MidiWriter:
         self.key_signature = "C"  
         
     def normalize_instrument_name(self, name):
-        match = re.match(r"([A-Za-z]+)", name)  # Extracts the base name (letters only)
-        return match.group(1) if match else name  # Return the base name or the original name
+        match = re.match(r"([A-Za-z]+)", name)
+        return match.group(1) if match else name
 
     def get_program_number(self, instrument_name):
         normalized_name = self.normalize_instrument_name(instrument_name)
@@ -38,8 +37,6 @@ class MidiWriter:
     def handle_chord_with_transformations(self, tone, current_transformed_chord, transformation_sequence, transformation_index):
         if tone.operations != "none":
             op = tone.operations.get('neorieman', None)
-            #print(f"Neo-Riemannian operation: {op}")
-            #print(f"Chord: {tone.chord}")
 
             if op in ["P", "L", "R"]:
                 # If there is a current transformed chord, apply the operation to it
@@ -54,16 +51,13 @@ class MidiWriter:
                     transformation_function = getattr(transformer, op, None)
                     if transformation_function:
                         transformed_chord = transformation_function()  # Call the method
-                        # Update the current transformed chord
-                        #current_transformed_chord = [p.name for p in transformed_chord.pitches]
-                        # Normalize the pitch names
+                        # Update the current transformed chord and normalize the pitch names
                         current_transformed_chord = [NeoRiemannian.normalize_pitch_name(p) for p in transformed_chord.pitches]
-                        print(f"Transformed chord using {op}: {current_transformed_chord}")
 
                         # Move to the next transformation in the sequence
                         transformation_index = (transformation_index + 1) % len(transformation_sequence)
                     else:
-                        print(f"Invalid Neo-Riemannian operation: {op}")
+                        raise ValueError(f"Invalid Neo-Riemannian operation: {op}")
             else:
                 # Reset the transformed chord and transformation sequence if the operation is not Neo-Riemannian
                 current_transformed_chord = None
@@ -106,11 +100,9 @@ class MidiWriter:
             midi_file.tracks.append(track)
             # Get the program number for the instrument
             program = self.get_program_number(instrument_name)
-            print(f"Instrument: {instrument_name}, Program: {program}")
             
             # Add a program_change message
             track.append(Message('program_change', program=program, channel=instrument_index, time=0))
-            print(f"Writing track for instrument: {instrument_name} (program {program})")
             
             # Initialize variables to track the current transformed chord and transformation sequence
             current_transformed_chord = None
