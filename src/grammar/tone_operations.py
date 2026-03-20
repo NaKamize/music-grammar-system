@@ -2,7 +2,7 @@ import random
 
 class ToneOperator:    
     @staticmethod
-    def counterpoint(note):
+    def counterpoint(note: str) -> str:
         # Basic mapping of note names to semitone values in C major
         note_to_semitone = {
             "C": 0, "D": 2, "E": 4, "F": 5,
@@ -19,7 +19,7 @@ class ToneOperator:
             raise ValueError(f"Unknown note: {note}")
 
         # Try all consonant intervals above the melody note
-        possible_notes = []
+        possible_notes: list[str] = []
         for interval in consonant_intervals:
             cp_semitone = (base_semitone + interval) % 12
             if cp_semitone in semitone_to_note:

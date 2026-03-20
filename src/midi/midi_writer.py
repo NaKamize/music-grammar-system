@@ -1,10 +1,12 @@
-from mido import Message, MidiFile, MidiTrack, MetaMessage
+from __future__ import annotations
+from typing import Any
+from mido import Message, MidiFile, MidiTrack, MetaMessage  # type: ignore[import-untyped]
 from utils.neo_riemann import NeoRiemannian
-
+from grammar.parser import ToneRule
 import re
 
 class MidiWriter:
-    def __init__(self, multi_string):
+    def __init__(self, multi_string: dict[str, Any]) -> None:
         self.multi_string = multi_string
         self.instrument_map = {
             "Violin": 40,
@@ -22,21 +24,21 @@ class MidiWriter:
         
         self.key_signature = "C"  
         
-    def normalize_instrument_name(self, name):
+    def normalize_instrument_name(self, name: str) -> str:
         match = re.match(r"([A-Za-z]+)", name)
         return match.group(1) if match else name
 
-    def get_program_number(self, instrument_name):
+    def get_program_number(self, instrument_name: str) -> int:
         normalized_name = self.normalize_instrument_name(instrument_name)
         return self.instrument_map.get(normalized_name, 0)
     
-    def get_corrected_pitch(self, pitch, transpose):
+    def get_corrected_pitch(self, pitch: int, transpose: int) -> int:
         """Apply transposition to the pitch."""
         return pitch + transpose        
     
-    def handle_chord_with_transformations(self, tone, current_transformed_chord, transformation_sequence, transformation_index):
-        if tone.operations != "none":
-            op = tone.operations.get('neorieman', None)
+    def handle_chord_with_transformations(self, tone: ToneRule, current_transformed_chord: list[str] | None, transformation_sequence: list[str], transformation_index: int) -> tuple[list[str] | None, int]:
+        if isinstance(tone.operations, dict):
+            op = tone.get_neoriemann_op()
 
             if op in ["P", "L", "R"]:
                 # If there is a current transformed chord, apply the operation to it
@@ -65,11 +67,11 @@ class MidiWriter:
 
         return current_transformed_chord, transformation_index   
 
-    def write_to_midi(self, output_file):
+    def write_to_midi(self, output_file: str) -> None:
         """
         Writes the multi_string structure to a MIDI file.
         """
-        midi_file = MidiFile()
+        midi_file: Any = MidiFile()
 
         pitch_map = {
             'C': 0, 'C#': 1, 'D-': 1, 'D': 2, 'D#': 3, 'E-': 3, 'E': 4, 'F': 5,
@@ -95,7 +97,7 @@ class MidiWriter:
 
         for instrument_index, (instrument_name, tracks) in enumerate(self.multi_string.items()):
             key_signature = MetaMessage('key_signature', key=self.key_signature)
-            track = MidiTrack()
+            track: Any = MidiTrack()
             track.append(key_signature)
             midi_file.tracks.append(track)
             # Get the program number for the instrument
@@ -114,7 +116,7 @@ class MidiWriter:
                 for tone in tone_rule:
                     if tone.tone is not None:                                
                         # Extract pitch, length, and dynamics
-                        transpose = tone.operations.get('transpose', 0) if tone.operations != "none" else 0
+                        transpose = tone.get_transpose()
                         pitch = self.get_corrected_pitch(pitch_map.get(tone.tone, 0), transpose) + (tone.octave + 1) * 12
                         length = length_map.get(tone.length, 480)
                         dynamics = dynamics_map.get(tone.dynamics, 64)
@@ -130,11 +132,11 @@ class MidiWriter:
                             )
                                 
                             chord_to_write = current_transformed_chord if current_transformed_chord else tone.chord
+                            length = length_map.get(tone.length, 480)
                             for chord_tone in chord_to_write:
                                 # Extract pitch, length, and dynamics for each note in the chord
-                                transpose = tone.operations.get('transpose', 0) if tone.operations != "none" else 0
+                                transpose = tone.get_transpose()
                                 pitch = self.get_corrected_pitch(pitch_map.get(chord_tone, 0), transpose) + (tone.octave + 1) * 12
-                                length = length_map.get(tone.length, 480)
                                 dynamics = dynamics_map.get(tone.dynamics, 64)
 
                                 # Add note_on and note_off messages for each note in the chord
@@ -149,5 +151,5 @@ class MidiWriter:
             
 
         # Save the MIDI file
-        midi_file.save(output_file)
+        midi_file.save(output_file)  # type: ignore[no-untyped-call]
         print(f"MIDI file written to {output_file}")

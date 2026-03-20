@@ -5,179 +5,42 @@
             "terminals": ["C", "D", "E", "F", "G", ["D", "F", "A"], ["C", "E", "G"]],
             "start": "S",
             "structure_rules": [
-                { "left": ["S"], "right": ["AABA"] },
-                { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
-                { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
+                { "left": ["S"], "right": ["AB"] }
             ],
             "tone_rules": [
-                { "left": ["M", "M", "M"], "right": [
+                { "left": ["A", "B"], "right": [
                     [
-                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none"},
-                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none"},
-                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none"},
-                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none"}
+                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
+                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
+                        { "tone": "E", "length": "half", "octave": 4, "dynamics": "p", "operation": "none" }
                     ], 
                     [
                         { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
                         { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" }
-                    ], 
-                    [
-                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "p", "operation": "none" }
-                    ]
-                    ] 
-                },
-                { "left": ["H", "H", "H"], "right": [
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
-                    ], 
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
-                    ], 
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
-                    ]
-                    ] 
-                },
-                { "left": ["M1", "M2"], "right": [
-                    [{ "tone": "C", "length": "whole", "octave": 4, "dynamics": "p", "operation": "none" }],
-                    [{ "tone": "C", "length": "whole", "octave": 4, "dynamics": "p", "operation": "none" }]
-                    ] 
-                },
-                { "left": ["H1", "H2"], "right": [
-                    [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
-                    ],
-                    [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
+                        { "tone": "E", "length": "half", "octave": 4, "dynamics": "p", "operation": "none" }
                     ]
                     ] 
                 }
             ]
         },
         "Piano_bass": {
-            "nonterminals": ["S1", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["C", "D", "E", "F", "G", ["D", "F", "A"], ["C", "E", "G"]],
+            "nonterminals": ["S1", "X", "B"],
+            "terminals": ["C", "D", "E", "F", "G", "A", "H", ["D", "F", "A"], ["C", "E", "G"], ["E", "G", "H"], ["D", "F", "A"]],
             "start": "S1",
             "structure_rules": [
-                { "left": ["S1"], "right": ["AABA"] },
-                { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
-                { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
+                { "left": ["S1"], "right": ["XB"] }
             ],
             "tone_rules": [
-                { "left": ["M", "M", "M"], "right": [
+                { "left": ["X", "B"], "right": [
                     [
-                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" }
+                        { "chord": ["C", "E", "G"], "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
+                        { "chord": ["D", "F", "A"], "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
+                        { "chord": ["E", "G", "H"], "length": "half", "octave": 5, "dynamics": "p", "operation": "none" }
                     ], 
                     [
-                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" }
-                    ], 
-                    [
-                        { "tone": "C", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "E", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" }
-                    ]
-                    ] 
-                },
-                { "left": ["H", "H", "H"], "right": [
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
-                    ], 
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
-                    ], 
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "ff", "operation": "none" }
-                    ]
-                    ] 
-                },
-                { "left": ["M1", "M2"], "right": [
-                    [{ "tone": "C", "length": "whole", "octave": 4, "dynamics": "p", "operation": "none" }],
-                    [{ "tone": "C", "length": "whole", "octave": 4, "dynamics": "p", "operation": "none" }]
-                    ] 
-                },
-                { "left": ["H1", "H2"], "right": [
-                    [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
-                    ],
-                    [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mf", "operation": "none" }
-                    ]
-                    ] 
-                }
-            ]
-        },
-        "Violin": {
-            "nonterminals": ["S2", "A", "B", "M", "H", "H1", "M1", "M2", "H2"],
-            "terminals": ["C", "F", "G", "D", ["D", "F", "A"], ["C", "E", "G"]],
-            "start": "S2",
-            "structure_rules": [
-                { "left": ["S2"], "right": ["AABA"] },
-                { "left": ["A", "A", "A"], "right": ["MH", "MH", "MH"] },
-                { "left": ["B"], "right": ["H1", "M1", "M2", "H2"] }
-            ],
-            "tone_rules": [
-                { "left": ["M", "M", "M"], "right": [
-                    [
-                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
-                    ],
-                    [
-                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
-                    ],
-                    [
-                        { "tone": "D", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "C", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "G", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" },
-                        { "tone": "F", "length": "quarter", "octave": 4, "dynamics": "piano", "operation": "none" }
-                    ]
-                    ] 
-                },
-                { "left": ["H", "H", "H"], "right": [
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "fortissimo", "operation": "none" }
-                    ], 
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "fortissimo", "operation": "none" }
-                    ], 
-                    [
-                        { "chord": ["D", "F", "A"], "length": "whole", "octave": 4, "dynamics": "fortissimo", "operation": "none" }
-                    ]
-                    ] 
-                },
-                { "left": ["M1", "M2"], "right": [
-                    [{ "tone": "C", "length": "whole", "octave": 4, "dynamics": "piano", "operation": "none" }],
-                    [{ "tone": "C", "length": "whole", "octave": 4, "dynamics": "piano", "operation": "none" }]
-                    ] 
-                },
-                { "left": ["H1", "H2"], "right": [
-                    [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mezzo-forte", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mezzo-forte", "operation": "none" }
-                    ],
-                    [
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mezzo-forte", "operation": "none" },
-                        { "chord": ["C", "E", "G"], "length": "half", "octave": 4, "dynamics": "mezzo-forte", "operation": "none" }
+                        { "chord": ["C", "E", "G"], "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
+                        { "chord": ["D", "F", "A"], "length": "quarter", "octave": 5, "dynamics": "p", "operation": "none" },
+                        { "chord": ["E", "G", "H"], "length": "half", "octave": 5, "dynamics": "p", "operation": "none" }
                     ]
                     ] 
                 }
@@ -185,13 +48,7 @@
         }
     },
     "Q": [
-        { "Piano_bass": 0, "Piano_treble": 0, "Violin": 0 },
-        { "Piano_bass": 1, "Piano_treble": 1, "Violin": 1 },
-        { "Piano_bass": 2, "Piano_treble": 2, "Violin": 2 },
-        { "Piano_bass": 3, "Piano_treble": 3, "Violin": 3 },
-        { "Piano_bass": 4, "Piano_treble": 4, "Violin": 4 },
-        { "Piano_bass": 5, "Piano_treble": 5, "Violin": 5 },
-        { "Piano_bass": 6, "Piano_treble": 6, "Violin": 6 },
-        { "Piano_bass": 7, "Piano_treble": 7, "Violin": 7 }
+        { "Piano_bass": 0, "Piano_treble": 0},
+        { "Piano_bass": 1, "Piano_treble": 1}
     ]
 }

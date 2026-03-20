@@ -1,17 +1,17 @@
-from music21 import chord
+from music21 import chord, pitch
 
 class NeoRiemannian:
-    def __init__(self, chord_notes):
+    def __init__(self, chord_notes: list[str]) -> None:
         self.ch = chord.Chord(chord_notes)
         self.root = self.ch.root()
         self.quality = self.ch.quality  # 'major' or 'minor'
 
-    def P(self):
+    def P(self) -> chord.Chord:
         """Parallel: major → minor, minor → major"""
         new_quality = 'minor' if self.quality == 'major' else 'major'
         return self.build_from_root_and_quality(self.root, new_quality)
 
-    def R(self):
+    def R(self) -> chord.Chord:
         """Relative: major → relative minor, minor → relative major"""
         if self.quality == 'major':
             # relative minor is down a minor third from root
@@ -22,7 +22,7 @@ class NeoRiemannian:
             new_root = self.root.transpose('m3')
             return self.build_from_root_and_quality(new_root, 'major')
 
-    def L(self):
+    def L(self) -> chord.Chord:
         """Leading-tone exchange: major → minor with root a major third up, and vice versa"""
         if self.quality == 'major':
             new_root = self.root.transpose('M3')
@@ -31,7 +31,7 @@ class NeoRiemannian:
             new_root = self.root.transpose('-M3')
             return self.build_from_root_and_quality(new_root, 'major')
 
-    def build_from_root_and_quality(self, root_note, quality):
+    def build_from_root_and_quality(self, root_note: pitch.Pitch, quality: str) -> chord.Chord:
         """Construct a chord from root and quality"""
         if quality == 'major':
             third = root_note.transpose('M3')
@@ -41,19 +41,21 @@ class NeoRiemannian:
         return chord.Chord([root_note, third, fifth])
     
     @staticmethod
-    def normalize_pitch_name(p):
+    def normalize_pitch_name(p: pitch.Pitch) -> str:
         """
         Normalize pitch names by converting double flats (--) or double sharps (##)
         to their enharmonic equivalents if possible.
         """
         if '--' in p.name:
-            return p.getEnharmonic().name
+            enharmonic = p.getEnharmonic()
+            return enharmonic.name if enharmonic is not None else p.name
         elif '##' in p.name:
-            return p.getEnharmonic().name
+            enharmonic = p.getEnharmonic()
+            return enharmonic.name if enharmonic is not None else p.name
         return p.name
 
     @staticmethod
-    def chord_id(ch):
+    def chord_id(ch: chord.Chord) -> tuple[int, ...]:
         """
         Return a transposition-invariant ID (e.g., pitch class set as tuple),
         with normalization for double flats and double sharps.
@@ -63,7 +65,7 @@ class NeoRiemannian:
         print(f"Normalized pitches: {normalized_names}")
         return tuple(sorted(normalized_pitches))
 
-    def print_chord(self, ch, step):
+    def print_chord(self, ch: chord.Chord, step: int) -> None:
         """
         Prints the chord with normalized pitch names and the step number.
         """

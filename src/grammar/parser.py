@@ -1,14 +1,16 @@
+from __future__ import annotations
 import json
+from typing import Any, cast
 
 
 class GrammarSystem:
-    def __init__(self, instruments, states):
+    def __init__(self, instruments: dict[str, Instrument], states: list[dict[str, int]]) -> None:
         self.instruments = instruments  # Dictionary of Instrument objects
         self.states = states  # List of dictionaries representing states
 
 
 class Instrument:
-    def __init__(self, nonterminals, terminals, start, structure_rules, tone_rules):
+    def __init__(self, nonterminals: list[str], terminals: list[str | tuple[str, ...]], start: str, structure_rules: list[dict[str, Any]], tone_rules: list[dict[str, Any]]) -> None:
         self.nonterminals = nonterminals
         self.terminals = terminals
         self.start = start
@@ -17,7 +19,7 @@ class Instrument:
 
 
 class ToneRule:
-    def __init__(self, tone=None, length=None, octave=None, dynamics=None, variation=None, chord=None, operations=None):
+    def __init__(self, tone: str | None = None, length: str | None = None, octave: int | None = None, dynamics: str | None = None, variation: str | None = None, chord: list[str] | None = None, operations: dict[str, Any] | str | None = None) -> None:
         self.tone = tone
         self.length = length
         self.octave = octave
@@ -26,10 +28,20 @@ class ToneRule:
         self.chord = chord
         self.operations = operations
         
-    def set_tone_name(self, tone_name):
+    def set_tone_name(self, tone_name: str) -> None:
         self.tone = tone_name
+
+    def get_transpose(self) -> int:
+        if isinstance(self.operations, dict):
+            return int(self.operations.get('transpose', 0))
+        return 0
+
+    def get_neoriemann_op(self) -> str | None:
+        if isinstance(self.operations, dict):
+            return self.operations.get('neorieman', None)
+        return None
         
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         """
         Converts the ToneRule object into a dictionary for JSON serialization.
         """
@@ -46,7 +58,7 @@ class ToneRule:
 
 class Parser:
     
-    def parse_tone_or_nonterminal(self, tone):
+    def parse_tone_or_nonterminal(self, tone: dict[str, Any] | str) -> ToneRule | str:
         """
         Parses an element from the 'right' list. If it's a dictionary, it creates a ToneRule.
         If it's a string, it treats it as a nonterminal.
@@ -62,29 +74,27 @@ class Parser:
                 chord=tone.get("chord"),
                 operations=tone.get("operation")
             )
-        elif isinstance(tone, str):
-            return tone  # Return the nonterminal as-is
-        else:
-            # Handle invalid cases
-            raise ValueError(f"Invalid tone or nonterminal: {tone}")
+        # tone is a str (nonterminal)
+        return tone
         
-    def parse_grammar(self, file_path):
+    def parse_grammar(self, file_path: str) -> GrammarSystem | None:
         """
         Parses the JSON grammar file and returns a GrammarSystem object.
         """
         try:
             with open(file_path, 'r') as file:
-                data = json.load(file)
+                data: dict[str, Any] = json.load(file)
 
             # Parse instruments
-            instruments = {}
+            instruments: dict[str, Instrument] = {}
             for instrument_name, instrument_data in data["instruments"].items():
+                instrument_data = cast(dict[str, Any], instrument_data)
                 # Preprocess terminals: Convert nested lists to tuples
-                terminals = set(
-                    tuple(item) if isinstance(item, list) else item
+                terminals: set[str | tuple[str, ...]] = set(
+                    tuple(cast(list[str], item)) if isinstance(item, list) else cast(str, item)
                     for item in instrument_data["terminals"]
                 )
-                nonterminals = set(instrument_data["nonterminals"])
+                nonterminals: set[str] = set(instrument_data["nonterminals"])
 
                 # Validate that nonterminals and terminals do not overlap
                 overlap = nonterminals.intersection(terminals)
@@ -94,9 +104,9 @@ class Parser:
                         f"Symbols found in both nonterminals and terminals: {overlap}"
                     )
                 # Parse tone rules
-                tone_rules = []
+                tone_rules: list[dict[str, Any]] = []
                 for rule in instrument_data["tone_rules"]:
-                    parsed_rule = {
+                    parsed_rule: dict[str, Any] = {
                         "left": rule["left"],
                         "right": [
                             [
@@ -126,7 +136,7 @@ class Parser:
             print(f"Error loading grammar file: {e}")
             return None
 
-    def print_grammar_system(self, grammar_system):
+    def print_grammar_system(self, grammar_system: GrammarSystem) -> None:
         """
         Prints the grammar system in a readable format.
         """

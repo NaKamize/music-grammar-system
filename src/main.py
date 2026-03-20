@@ -1,7 +1,7 @@
 import sys
 from cli.commands import Commands
 
-def main():
+def main() -> None:
     commands = Commands()
     if len(sys.argv) < 2:
         print("Usage: python3 main.py <command> [args...]")

@@ -5,13 +5,13 @@ import json
 
 
 class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if hasattr(obj, "to_dict"):
-            return obj.to_dict()
-        return super().default(obj) 
+    def default(self, o: object) -> object:
+        if hasattr(o, "to_dict"):
+            return o.to_dict()  # type: ignore[union-attr]
+        return super().default(o) 
 
 class Commands:
-    def execute_command(self, command_name, *args):
+    def execute_command(self, command_name: str, *args: str) -> None:
         if command_name == "generate":
             if len(args) < 1:
                 print("Error: Missing grammar file argument for generate command.")
@@ -42,14 +42,14 @@ class Commands:
         else:
             print(f"Unknown command: {command_name}")
 
-    def list_commands(self):
+    def list_commands(self) -> None:
         print("Available commands:")
         print("  generate <infile> <number> <outfile> Generate MIDI music from grammar and specify the number of possible repetitions")
         print("                               and the name of the output file.")
         print("  list - List available commands.")
         print("  instruments - List available instruments and their program numbers.")
 
-    def generate_music(self, grammar_file, outfile, repetitions=1):
+    def generate_music(self, grammar_file: str, outfile: str, repetitions: int = 1) -> None:
         # Parse the grammar file
         parser = Parser()
         grammar_system = parser.parse_grammar(grammar_file)
